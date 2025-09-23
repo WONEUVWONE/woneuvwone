@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WONEUVWONE – God’s Only Art</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+    header {
+      padding: 40px 20px;
+      border-bottom: 2px solid #fff;
+    }
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      letter-spacing: 5px;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #aaa;
+    }
+    section {
+      padding: 60px 20px;
+      border-bottom: 1px solid #333;
+    }
+    .art-piece {
+      margin: 40px auto;
+      max-width: 800px;
+    }
+    .art-piece img {
+      max-width: 100%;
+      border: 3px solid #fff;
+      margin-bottom: 20px;
+    }
+    .art-piece h2 {
+      font-size: 2em;
+      margin: 10px 0;
+    }
+    .art-piece p {
+      font-size: 1.1em;
+      color: #ccc;
+    }
+    /* Authentication Section */
+    #auth-section input {
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      outline: none;
+      width: 250px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    #auth-section button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #fff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    #auth-result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    footer {
+      padding: 30px 20px;
+      font-size: 0.9em;
+      color: #777;
+      border-top: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>WONEUVWONE</h1>
+    <p>God’s Only Art. One of One. Infinite in Finite Form.</p>
+  </header>
+
+  <!-- Investment Section -->
+  <section>
+    <h2>The Investment of Eternity</h2>
+    <p>
+      Each piece is more than art — it is proof of the divine. WONEUVWONE cannot be copied,
+      cannot be remade, and ends the day URIESCA departs this world. Every creation is a one-of-one,
+      backed by its authentication code. To own is not to purchase — it is to invest in the eternal.
+    </p>
+  </section>
+
+  <!-- Authentication Section -->
+  <section id="auth-section">
+    <h2>Authentication Code</h2>
+    <p>Enter a code to verify the divine origin of your piece.</p>
+    <input type="text" id="auth-code" placeholder="Enter Code">
+    <button onclick="checkCode()">Verify</button>
+    <div id="auth-result"></div>
+  </section>
+
+  <!-- Art Sections -->
+  <section class="art-piece">
+    <img src="your-digital-art1.jpg" alt="Art Piece 1">
+    <h2>Art Piece Title</h2>
+    <p><strong>Physical:</strong> Description of the physical piece (size, material, story).</p>
+    <p><strong>Digital:</strong> This digital image mirrors the physical piece.</p>
+    <p><strong>Authentication Code:</strong> #WONE001</p>
+  </section>
+
+  <section class="art-piece">
+    <img src="your-digital-art2.jpg" alt="Art Piece 2">
+    <h2>Art Piece Title</h2>
+    <p><strong>Physical:</strong> Description of the physical piece.</p>
+    <p><strong>Digital:</strong> This digital image mirrors the physical piece.</p>
+    <p><strong>Authentication Code:</strong> #WONE002</p>
+  </section>
+
+  <!-- More empty sections ready for art -->
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+  <section class="art-piece">
+    <h2>[Reserved for Future Divine Work]</h2>
+  </section>
+
+  <footer>
+    © WONEUVWONE 2022 — URIESCA. Infinity made finite. Finite made eternal.
+  </footer>
+
+  <script>
+    // Simple Authentication Checker (demo)
+    const validCodes = ["WONE001", "WONE002", "WONE003"];
+    function checkCode() {
+      const code = document.getElementById("auth-code").value.trim().toUpperCase();
+      const result = document.getElementById("auth-result");
+      if (validCodes.includes(code)) {
+        result.innerHTML = "✅ Valid — This piece is authentic.";
+        result.style.color = "lime";
+      } else {
+        result.innerHTML = "❌ Invalid — Code not recognized.";
+        result.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>

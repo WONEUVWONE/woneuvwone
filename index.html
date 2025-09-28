@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WONEUVWONE © 2022 - God-Made Asset</title>
+<meta name="description" content="WONEUVWONE: One-of-One God-Made Masterpieces. Eternal, unique, and secure investments.">
+<meta name="keywords" content="WONEUVWONE, God-Made, One-of-One, Investment, Digital Art, Physical Art, Cosmic, Exclusive">
+<style>
+  body {
+    margin:0;
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at center, #000 0%, #111 100%);
+    color:#fff;
+    overflow-x:hidden;
+  }
+  header{
+    text-align:center;
+    padding:50px 20px;
+  }
+  header h1{
+    font-size:3rem;
+    letter-spacing:5px;
+    margin-bottom:20px;
+  }
+  header p{
+    font-size:1.2rem;
+    max-width:800px;
+    margin:0 auto;
+    line-height:1.6;
+  }
+  section.asset{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:60px 20px;
+    border-bottom:1px solid #333;
+  }
+  section.asset img{
+    max-width:400px;
+    margin-bottom:20px;
+    background-color:#111;
+    padding:20px;
+  }
+  section.asset h2{
+    font-size:2rem;
+    margin-bottom:10px;
+  }
+  section.asset p.description{
+    max-width:600px;
+    text-align:center;
+    margin-bottom:10px;
+  }
+  section.asset p.price{
+    font-size:1.5rem;
+    margin-bottom:10px;
+  }
+  input.code-input{
+    padding:10px;
+    font-size:1rem;
+    margin-bottom:20px;
+    text-align:center;
+    display:none;
+  }
+  button.buy-btn{
+    padding:15px 40px;
+    font-size:1.2rem;
+    background-color:#fff;
+    color:#000;
+    border:none;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  button.buy-btn:hover{
+    background-color:#222;
+    color:#fff;
+  }
+  #cart{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+    max-width:300px;
+    width: 280px;
+  }
+  #cart h3{
+    margin-top:0;
+  }
+  #cart ul{
+    list-style:none;
+    padding:0;
+    max-height:300px;
+    overflow-y:auto;
+  }
+  #cart ul li{
+    margin-bottom:10px;
+  }
+  footer{
+    text-align:center;
+    padding:50px 20px;
+    font-size:0.9rem;
+    border-top:1px solid #333;
+  }
+</style>
+<script src="https://www.paypal.com/sdk/js?client-id=AUvyphdEPA77Ia6dtuSv-DCRnuWsRP0L9wmxY-uqaPVGxNiKOuiBHJiLCTQcHttLoi7eskjNDhFruS7D&currency=USD"></script>
+</head>
+<body>
+
+<header>
+  <h1>WONEUVWONE © 2022</h1>
+  <p>
+    WONEUVWONE: One-of-One God-Made Masterpieces. Every asset is unique, fragile, and eternal.  
+    Owning one is holding a fragment of divine creation.  
+    Prices start at $11,111 and increase with each purchase. Once all assets reach $1,111,111, the final price locks permanently.  
+    Only true owners can hold a WONEUVWONE. This is the ultimate investment, safe and eternal.
+  </p>
+</header>
+
+<div id="cart">
+  <h3>Cart</h3>
+  <ul id="cart-items"></ul>
+  <div id="paypal-button-container"></div>
+  <input type="text" id="lucky-code" placeholder="Enter Lucky Code" style="display:none;">
+</div>
+
+<script>
+let cart = [];
+let luckyCodes = ["LUCKY95OFF1","LUCKY95OFF2","LUCKY95OFF3","LUCKY95OFF4","LUCKY95OFF5"];
+let verificationCodes = [
+  "V3R1F1CAT10N1","V3R1F1CAT10N2","V3R1F1CAT10N3","V3R1F1CAT10N4",
+  "V3R1F1CAT10N5","V3R1F1CAT10N6","V3R1F1CAT10N7","V3R1F1CAT10N8",
+  "V3R1F1CAT10N9","V3R1F1CAT10N10","V3R1F1CAT10N11"
+];
+
+function addToCart(name, price){
+  cart.push({name, price});
+  updateCart();
+}
+
+function updateCart(){
+  let cartItems = document.getElementById('cart-items');
+  cartItems.innerHTML = '';
+  cart.forEach((item, i) => {
+    let li = document.createElement('li');
+    li.textContent = item.name + ' - $' + item.price;
+    cartItems.appendChild(li);
+  });
+  if(cart.length>0){
+    document.getElementById('lucky-code').style.display='block';
+  } else {
+    document.getElementById('lucky-code').style.display='none';
+  }
+  renderPayPalButton();
+}
+
+function renderPayPalButton(){
+  document.getElementById('paypal-button-container').innerHTML='';
+  paypal.Buttons({
+    createOrder: function(data, actions){
+      let total = cart.reduce((acc, item)=>acc+item.price,0);
+      return actions.order.create({
+        purchase_units:[{
+          amount:{value: total}
+        }]
+      });
+    },
+    onApprove: function(data, actions){
+      return actions.order.capture().then(function(details){
+        alert('Transaction completed by ' + details.payer.name.given_name);
+        cart=[];
+        updateCart();
+      });
+    }
+  }).render('#paypal-button-container');
+}
+</script>
+
+<!-- 11 Asset Sections -->
+<section class="asset">
+  <img src="placeholder.jpg" alt="Living Asset 1">
+  <h2>Living Asset</h2>
+  <p class="description">Made from recycled virgin wood pulp. Each asset is one-of-one and fragile, engraved with a unique identity. This is a living investment that grows over time.</p>
+  <p class="price">$11,111</p>
+  <input class="code-input" type="text" placeholder="Enter Verification Code">
+  <button class="buy-btn" onclick="addToCart('Living Asset 1',11111)">Add to Cart</button>
+</section>
+
+<section class="asset">
+  <img src="placeholder.jpg" alt="Living Asset 2">
+  <h2>Living Asset</h2>
+  <p class="description">Made from recycled virgin wood pulp. Each asset is one-of-one and fragile, engraved with a unique identity. This is a living investment that grows over time.</p>
+  <p class="price">$11,111</p>
+  <input class="code-input" type="text" placeholder="Enter Verification Code">
+  <button class="buy-btn" onclick="addToCart('Living Asset 2',11111)">Add to Cart</button>
+</section>
+
+<section class="asset">
+  <img src="placeholder.jpg" alt="Living Asset 3">
+  <h2>Living Asset</h2>
+  <p class="description">Made from recycled virgin wood pulp. Each asset is one-of-one and fragile, engraved with a unique identity. This is a living investment that grows over time.</p>
+  <p class="price">$11,111</p>
+  <input class="code-input" type="text" placeholder="Enter Verification Code">
+  <button class="buy-btn" onclick="addToCart('Living Asset 3',11111)">Add to Cart</button>
+</section>
+
+<section class="asset">
+  <img src="placeholder.jpg" alt="Living Asset 4">
+  <h2>Living Asset</h2>
+  <p class="description">Made from recycled virgin wood pulp. Each asset is one-of-one and fragile, engraved with a unique identity. This is a living investment that grows over time.</p>
+  <p class="price">$11,111</p>
+  <input class="code-input" type="text" placeholder="Enter Verification Code">
+  <button class="buy-btn" onclick="addToCart('Living Asset 4',11111)">Add to Cart</button>
+</section>
+
+<section class="asset">
+  <img src="placeholder.jpg" alt="Living Asset 5">
+  <h2

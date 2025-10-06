@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>WONEUVWONE — Digital Art (1 BTC each)</title>
+<meta name="description" content="WONEUVWONE — one-of-one digital art by URIESCA. Each piece = 1 BTC. Pay with PayPal (USD equivalent) or manual BTC."/>
+<style>
+  :root{--accent:#9ee7e1;--bg:#000;--card:#0b0b0f}
+  body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:#fff}
+  .wrap{max-width:1100px;margin:20px auto;padding:20px}
+  header{text-align:center}
+  header h1{font-size:36px;margin:6px 0}
+  header p{color:#9aa0a6;margin:0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:18px}
+  .card{background:var(--card);padding:14px;border-radius:10px;text-align:left;border:1px solid rgba(255,255,255,0.03)}
+  .card img{width:100%;height:180px;object-fit:cover;border-radius:8px;background:#111}
+  .title{font-weight:700;margin:8px 0}
+  .price{color:var(--accent);font-weight:700}
+  .muted{color:#9aa0a6;font-size:13px}
+  .btn{background:#fff;color:#000;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:700;display:inline-block}
+  #cart{position:fixed;right:18px;top:18px;width:320px;background:#0f0f16;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
+  #cart h4{margin:0 0 8px}
+  #cart ul{list-style:none;padding:0;margin:0;max-height:260px;overflow:auto}
+  #totals{margin-top:10px;font-weight:700;color:var(--accent)}
+  .modal{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#06060a;padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);z-index:999;width:90%;max-width:520px}
+  .modal h3{margin:0 0 6px}
+  .code{background:#05050a;padding:8px;border-radius:6px;font-family:monospace;display:block;margin:8px 0;color:var(--accent)}
+  .qr{width:180px;height:180px;border-radius:8px;margin:8px auto;display:block;background:#fff}
+  .small{font-size:13px;color:#9aa0a6}
+  footer{margin:40px 0 80px;text-align:center;color:#9aa0a6}
+  @media(max-width:840px){ #cart{position:static;width:auto;margin:10px} }
+</style>
+
+<!-- PayPal SDK - LIVE client id already inserted -->
+<script src="https://www.paypal.com/sdk/js?client-id=AUvyphdEPA77Ia6dtuSv-DCRnuWsRP0L9wmxY-uqaPVGxNiKOuiBHJiLCTQcHttLoi7eskjNDhFruS7D&currency=USD"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>WONEUVWONE</h1>
+    <p class="muted">One-of-one digital art by URIESCA — price: <strong>1 BTC</strong> (USD equivalent shown live)</p>
+  </header>
+
+  <div id="notice" style="margin-top:12px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);color:#cfd8dc">
+    <strong>Important:</strong> Paying via PayPal charges the USD equivalent of 1 BTC to this sale. If you prefer to pay on‑chain in Bitcoin, you can later enable the BTC address/QR shown on this page.
+  </div>
+
+  <section id="gridWrap" class="grid" aria-live="polite"></section>
+
+  <div style="margin-top:20px;text-align:center">
+    <p class="muted">Optional on-chain BTC payment (disabled for now)</p>
+    <img id="btcQR" class="qr" src="https://via.placeholder.com/200x200?text=BTC+QR" alt="BTC QR">
+    <div class="small">Send BTC to: <span id="btcAddress" class="muted">(will be added later)</span></div>
+  </div>
+
+  <footer>
+    <div class="small">Contact: YOUR_EMAIL_OR_CONTACT_HERE — seller verifies purchases and delivers unique codes.</div>
+  </footer>
+</div>
+
+<!-- Cart (fixed) -->
+<div id="cart">
+  <h4>Your Cart</h4>
+  <ul id="cartList"><li class="muted">Cart is empty</li></ul>
+  <div id="totals" class="muted">Total: <span id="totalBTC">0</span> BTC • <span id="totalUSD">$0</span></div>
+  <div style="margin-top:10px" id="paypal-button-container"></div>
+  <div style="margin-top:10px" class="small">After PayPal payment, keep the confirmation and deliver buyer their code after verification.</div>
+</div>
+
+<!-- success/confirmation modal -->
+<div id="successModal" class="modal">
+  <h3>Payment confirmed</h3>
+  <div id="successMsg" class="small"></div>
+  <div style="margin-top:10px">Unique code(s) for your purchase:</div>
+  <div id="codesList"></div>
+  <div style="text-align:center;margin-top:12px"><button class="btn" onclick="closeModal()">Close</button></div>
+</div>
+
+<script>
+const BASE_USD_IF_BTC_DOWN = 11450;
+const ASSET_COUNT = 11;
+let btcUSD = null;
+let assets = [];
+let cart = [];
+
+async function fetchBtcPrice(){
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+    const j = await res.json();
+    btcUSD = j.bitcoin.usd;
+  }catch(e){
+    btcUSD = BASE_USD_IF_BTC_DOWN;
+    console.warn('BTC price lookup failed, using fallback', e);
+  }
+}
+
+function buildAssets(){
+  assets = [];
+  for(let i=1;i<=ASSET_COUNT;i++){
+    assets.push({
+      id:i,
+      title:`Digital Asset ${i}`,
+      code:`WONE-BTC-${1000+i}`,
+      img:`https://via.placeholder.com/600x400/0b0b0f/ffffff?text=WONE+${i}`,
+      priceBTC:1
+    });
+  }
+}
+
+function renderAssets(){
+  const grid = document.getElementById('gridWrap');
+  grid.innerHTML = '';
+  assets.forEach(a=>{
+    const usd = btcUSD ? (a.priceBTC*btcUSD).toFixed(2) : (a.priceBTC*BASE_USD_IF_BTC_DOWN).toFixed(2);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${a.img}" alt="${a.title}">
+      <div style="padding:8px 0">
+        <div class="title">${a.title}</div>
+        <div class="price">1 BTC &nbsp; <span class="muted">(~$${usd})</span></div>
+        <div class="muted" style="margin-top:6px">Unique code will be delivered after payment verification</div>
+        <div style="margin-top:12px">
+          <button class="btn" onclick="addToCart(${a.id})">Buy (1 BTC)</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  updateCartUI();
+}
+
+function addToCart(id){
+  const item = assets.find(x=>x.id===id);
+  if(!item){ alert('Item not found'); return; }
+  if(cart.find(c=>c.id===id)){ alert('Item already in cart'); return; }
+  cart.push(item);
+  updateCartUI();
+}
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  updateCartUI();
+}
+function updateCartUI(){
+  const list = document.getElementById('cartList');
+  list.innerHTML = '';
+  if(cart.length===0){ list.innerHTML = '<li class="muted">Cart is empty</li>'; }
+  cart.forEach((c,idx)=>{
+    const li = document.createElement('li');
+    li.style.display='flex';
+    li.style.justifyContent='space-between';
+    li.style.padding='6px 0';
+    li.innerHTML = `<span>${c.title}</span><span style="color:#9aa0a6;cursor:pointer" onclick="removeFromCart(${idx})">Remove</span>`;
+    list.appendChild(li);
+  });
+  const totalBTC = cart.length;
+  document.getElementById('totalBTC').textContent = totalBTC.toFixed(8).replace(/\.?0+$/,'');
+  const usd = btcUSD ? (totalBTC*btcUSD) : (totalBTC*BASE_USD_IF_BTC_DOWN);
+  document.getElementById('totalUSD').textContent = '$' + Number(usd).toLocaleString(undefined,{maximumFractionDigits:2});
+}
+
+function renderPayPalButton(){
+  if(typeof paypal === 'undefined'){ console.error('PayPal SDK not loaded'); return; }
+
+  paypal.Buttons({
+    style:{layout:'vertical', color:'gold', shape:'rect', label:'pay'},
+    createOrder: function(data, actions) {
+      if(cart.length===0){ alert('Cart is empty'); return; }
+      const totalBTC = cart.length;
+
+      // ======= NORMAL (default) - real BTC USD equivalent =======
+      const usdValue = btcUSD ? (totalBTC*btcUSD) : (totalBTC*BASE_USD_IF_BTC_DOWN);
+
+      // ======= OPTIONAL: quick-test $1 (UNCOMMENT TO USE) =======
+      // const usdValue = 1;
+
+      return actions.order.create({
+        purchase_units:[{ amount:{ value: usdValue.toFixed(2) } }]
+      });
+    },
+    onApprove: function(data, actions){
+      return actions.order.capture().then(function(details){
+        const orders = JSON.parse(localStorage.getItem('wone_orders')||'[]');
+        const newOrder = {
+          id: Date.now(),
+          paypalOrderId: data.orderID,
+          payerName: (details.payer && details.payer.name && details.payer.name.given_name) ? details.payer.name.given_name : 'Buyer',
+          payerEmail: details.payer && details.payer.email_address ? details.payer.email_address : '',
+          items: cart.map(i=>i.title),
+          amount: details.purchase_units && details.purchase_units[0] && details.purchase_units[0].amount && details.purchase_units[0].amount.value,
+          time: new Date().toISOString()
+        };
+        orders.unshift(newOrder);
+        localStorage.setItem('wone_orders', JSON.stringify(orders));
+
+        document.getElementById('successMsg').innerHTML = `<div class="small">Payment captured by PayPal. We will verify this transaction and deliver your unique BTC-style code(s) below.</div>`;
+        const codesHTML = cart.map(c=>`<div class="code">${c.code}</div>`).join('');
+        document.getElementById('codesList').innerHTML = codesHTML;
+        showModal();
+        cart=[];
+        updateCartUI();
+        setTimeout(()=>{ renderPayPalButton(); }, 600);
+      });
+    },
+    onError: function(err){
+      console.error(err);
+      alert('Payment error. Try again.');
+    }
+  }).render('#paypal-button-container');
+}
+
+function showModal(){ document.getElementById('successModal').style.display='block'; }
+function closeModal(){ document.getElementById('successModal').style.display='none'; }
+
+/* init */
+(async function init(){
+  await fetchBtcPrice();
+  buildAssets();
+  renderAssets();
+  renderPayPalButton();
+})();
+</script>
+</body>
+</html>

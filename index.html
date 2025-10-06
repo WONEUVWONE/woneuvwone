@@ -307,6 +307,11 @@ function openCheckout(){
   renderPayPalButton();
 })();
 </script>
+  /* =========================
+   CONFIG - set these values
+   ========================= */
+const BASE_USD_IF_BTC_DOWN = 11450;   // fallback USD if BTC lookup fails
+const ASSET_COUNT = 11;               // how many digital art items to show
 <!-- PayPal payment button -->
 <div id="paypal-button-container" style="text-align:center; margin-top:40px;"></div>
 <!-- PayPal JS SDK -->

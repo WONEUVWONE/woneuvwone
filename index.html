@@ -306,16 +306,95 @@ function openCheckout(){
   // render PayPal button (depends on client-id in script tag)
   renderPayPalButton();
 })();
-</script>
-  /* =========================
+<script>
+/* =========================
    CONFIG - set these values
    ========================= */
-const BASE_USD_IF_BTC_DOWN = 11450;   // fallback USD if BTC lookup fails
-const ASSET_COUNT = 11;               // how many digital art items to show
-<!-- PayPal payment button -->
-<div id="paypal-button-container" style="text-align:center; margin-top:40px;"></div>
-<!-- PayPal JS SDK -->
-  <!-- PayPal JS SDK - LIVE -->
-const usdValue = 1; // For live test with $1 USD fixed amount
+const BASE_USD_IF_BTC_DOWN = 11450;
+const ASSET_COUNT = 11;
+
+// app state
+let btcUSD = null;
+let assets = [];
+let cart = [];
+
+// build assets (your digital art items)
+function buildAssets(){
+  for(let i=1;i<=ASSET_COUNT;i++){
+    assets.push({
+      id:i,
+      title:`Digital Asset ${i}`,
+      code:`WONE-ART-${1000+i}`,
+      img:`placeholder${i}.jpg`,
+      priceBTC:1
+    });
+  }
+}
+
+// render items on the page
+function renderAssets(){
+  const grid = document.getElementById('assetsGrid');
+  grid.innerHTML='';
+  assets.forEach(a=>{
+    const div = document.createElement('div');
+    div.className='card';
+    div.innerHTML=`
+      <img src="${a.img}" alt="${a.title}">
+      <h3>${a.title}</h3>
+      <p class="price">1 BTC</p>
+      <p style="color:#cfd8dc">One-of-one digital art by URIESCA.</p>
+      <div style="margin-top:12px">
+        <button class="btn" onclick="addToCart(${a.id})">Add to cart</button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+  renderCart();
+}
+
+// cart functions
+function addToCart(id){
+  const item = assets.find(a=>a.id===id);
+  if(item) cart.push(item);
+  renderCart();
+}
+function renderCart(){
+  const c = document.getElementById('cartItems');
+  if(!c) return;
+  if(cart.length===0){ c.innerHTML='<p>Your cart is empty</p>'; return; }
+  c.innerHTML = cart.map(a=>`<p>${a.title}</p>`).join('');
+}
+
+// ======== PayPal Button Section ========
+paypal.Buttons({
+  style:{layout:'vertical', color:'gold', shape:'rect', label:'pay'},
+  createOrder: function(data, actions) {
+    if(cart.length === 0){ 
+      alert('Cart is empty'); 
+      return; 
+    }
+    const usdValue = 1; // $1 test
+    return actions.order.create({
+      purchase_units:[{ amount:{ value: usdValue.toFixed(2) } }]
+    });
+  },
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details){
+      alert('✅ Payment complete! Save this confirmation: ' + details.id);
+    });
+  },
+  onError: function(err){
+    console.error(err);
+    alert('Payment error. Try again later.');
+  }
+}).render('#paypal-button-container');
+
+// ======== Initialize the Page ========
+(async function init(){
+  buildAssets();
+  renderAssets();
+  renderCart();
+})();
+</script>
 </body>  
 </html>

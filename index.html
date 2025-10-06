@@ -180,8 +180,45 @@ function renderPayPalButton(){
   const container = document.getElementById('paypal-button-container');
   container.innerHTML = ''; // reset
   paypal.Buttons({
-    style:{layout:'vertical', color:'gold', shape:'rect', label:'pay'},
-    createOrder: function(data, actions) {
+      createOrder: function(data, actions) {
+    if(cart.length === 0){ 
+      alert('Cart is empty'); 
+      return; 
+    }
+
+    // FIXED $1 USD for testing (real mode)
+    const usdValue = 1;
+
+    return actions.order.create({
+      purchase_units:[{ amount:{ value: usdValue.toFixed(2) } }]
+    });
+  },
+
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details){
+      const orders = JSON.parse(localStorage.getItem('wone_orders')||'[]');
+      const newOrder = {
+        id: Date.now(),
+        paypalOrderId: data.orderID,
+        payerName: details.payer.name && details.payer.name.given_name ? details.payer.name.given_name : 'Buyer',
+        payerEmail: details.payer.email_address || '',
+        items: cart.map(i=>i.title),
+        amount: details.purchase_units && details.purchase_units[0] && details.purchase_units[0].amount && details.purchase_units[0].amount.value,
+        time: new Date().toISOString()
+      };
+      orders.unshift(newOrder);
+      localStorage.setItem('wone_orders', JSON.stringify(orders));
+      renderRecentSubmissions();
+      cart = []; renderCart();
+      alert('✅ Payment complete! Thank you — save this confirmation: ' + details.id);
+    });
+  },
+
+  onError: function(err){
+    console.error(err);
+    alert('Payment error. Try again later.');
+  }
+}).render('#paypal-button-container');
       if(cart.length === 0){ alert('Cart is empty'); return; }
       const totalBTC = cart.length * 1;
       const usdValue = btcUSD ? (totalBTC * btcUSD) : (totalBTC * BASE_USD_IF_BTC_DOWN);
@@ -274,6 +311,6 @@ function openCheckout(){
 <div id="paypal-button-container" style="text-align:center; margin-top:40px;"></div>
 <!-- PayPal JS SDK -->
   <!-- PayPal JS SDK - LIVE -->
-<script src="https://www.paypal.com/sdk/js?client-id=AUvyphdEPA77Ia6dtuSv-DCRnuWsRP0L9wmxY-uqaPVGxNiKOuiBHJiLCTQcHttLoi7eskjNDhFruS7D&currency=USD"></script>
+const usdValue = 1; // For live test with $1 USD fixed amount
 </body>  
 </html>

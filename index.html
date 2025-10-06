@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>WONEUVWONE — Digital Art (1 BTC each)</title>
+<style>
+  body{margin:0;font-family:Arial,sans-serif;background:#000;color:#fff}
+  .wrap{max-width:1100px;margin:20px auto;padding:20px}
+  header{text-align:center;margin-bottom:20px}
+  header h1{font-size:36px;margin:0}
+  header h2{color:#9ee7e1;margin:6px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .card{background:#0b0b0f;padding:14px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+  .card img{width:100%;height:200px;object-fit:cover;border-radius:8px;background:#111}
+  .price{color:#9ee7e1;font-weight:700;margin:8px 0}
+  .btn{background:#fff;color:#000;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+  #cartItems{margin:20px 0;padding:10px;background:#101018;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+  .qr{width:150px;height:150px;margin-top:10px}
+</style>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_LIVE_CLIENT_ID_HERE&currency=USD"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>WONEUVWONE</h1>
+    <h2>One-of-one digital art by URIESCA — Each 1 BTC</h2>
+  </header>
+
+  <!-- Assets grid -->
+  <div id="assetsGrid" class="grid"></div>
+
+  <!-- Cart -->
+  <div id="cartItems"><p>Cart is empty</p></div>
+
+  <!-- PayPal Button -->
+  <div id="paypal-button-container" style="margin-top:20px"></div>
+
+  <!-- Optional BTC QR -->
+  <div style="text-align:center;margin-top:20px">
+    <p style="color:#9ee7e1">Pay with Bitcoin (optional)</p>
+    <img id="btcQR" class="qr" src="https://chart.googleapis.com/chart?cht=qr&chl=YOUR_BITCOIN_ADDRESS_HERE&chs=200x200&choe=UTF-8&chld=L|2" alt="BTC QR">
+  </div>
+</div>
+
+<script>
+const BASE_USD_IF_BTC_DOWN = 11450;
+const ASSET_COUNT = 11;
+let btcUSD = null;
+let assets = [];
+let cart = [];
+
+async function fetchBtcPrice(){
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+    const j = await res.json();
+    btcUSD = j.bitcoin.usd;
+  } catch(e){ btcUSD = BASE_USD_IF_BTC_DOWN; }
+}
+
+function buildAssets(){
+  for(let i=1;i<=ASSET_COUNT;i++){
+    assets.push({
+      id:i,
+      title:`Digital Asset ${i}`,
+      code:`WONE-BTC-${1000+i}`,
+      img:`https://via.placeholder.com/300x200?text=Asset+${i}`,
+      priceBTC:1
+    });
+  }
+}
+
+function renderAssets(){
+  const grid = document.getElementById('assetsGrid');
+  grid.innerHTML='';
+  assets.forEach(a=>{
+    const div = document.createElement('div');
+    div.className='card';
+    const usd = btcUSD ? (a.priceBTC*btcUSD).toFixed(2) : (a.priceBTC*BASE_USD_IF_BTC_DOWN).toFixed(2);
+    div.innerHTML=`
+      <img src="${a.img}" alt="${a.title}">
+      <h3>${a.title}</h3>
+      <p class="price">1 BTC (~$${usd})</p>
+      <p>Unique Code: <strong>${a.code}</strong></p>
+      <div style="margin-top:12px">
+        <button class="btn" onclick="addToCart(${a.id})">Add to cart</button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+  renderCart();
+}
+
+function addToCart(id){
+  const item = assets.find(x=>x.id===id);
+  cart.push(item);
+  renderCart();
+}
+
+function renderCart(){
+  const c = document.getElementById('cartItems');
+  c.innerHTML = cart.length ? '<strong>Cart:</strong><br>' + cart.map(a=>`${a.title} — ${a.code}`).join('<br>') : '<p>Cart is empty</p>';
+}
+
+function renderPayPalButton(){
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      if(cart.length===0){ alert('Cart is empty'); return; }
+      const totalBTC = cart.length;
+      const usdValue = btcUSD ? (totalBTC*btcUSD) : (totalBTC*BASE_USD_IF_BTC_DOWN);
+      return actions.order.create({ purchase_units:[{ amount:{ value: usdValue.toFixed(2) } }] });
+    },
+    onApprove: function(data, actions){
+      return actions.order.capture().then(details=>{
+        alert('✅ Payment complete! Confirmation: ' + details.id + '\nYour codes:\n' + cart.map(a=>a.code).join('\n'));
+        cart=[];
+        renderCart();
+      });
+    }
+  }).render('#paypal-button-container');
+}
+
+(async function init(){
+  await fetchBtcPrice();
+  buildAssets();
+  renderAssets();
+  renderPayPalButton();
+})();
+</script>
+</body>
+</html>

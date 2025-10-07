@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WONEUVWONE Store — Exclusive Handmade Bracelets by URIESCA</title>
+<meta name="description" content="Buy WONEUVWONE one-of-one handmade bracelets by URIESCA. Secure PayPal purchase. Each bracelet has a unique code verified via phone. Exclusive, collectible, premium.">
+<meta name="keywords" content="WONEUVWONE, handmade bracelet, unique bracelet, one-of-one, exclusive jewelry, URIESCA, collectible bracelet, secure purchase, virgin wood bracelet">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="WONEUVWONE Store — Handmade Unique Bracelets">
+<meta property="og:description" content="Exclusive one-of-one handmade bracelets by URIESCA. Pay securely with PayPal. Each bracelet comes with a unique code verified via phone.">
+<meta property="og:image" content="bracelet-placeholder.jpg">
+<meta property="og:type" content="website">
+
+<style>
+body{margin:0;font-family:Inter, Arial, Helvetica, sans-serif;background:#000;color:#fff;}
+.wrap{max-width:900px;margin:20px auto;padding:20px;}
+header{text-align:center;}
+header h1{font-size:36px;margin:0;color:#9ee7e1;}
+header p{font-size:14px;color:#cfd8dc;margin-top:4px;}
+.bracelet-section{margin-top:20px;text-align:center;border:1px solid rgba(255,255,255,0.03);border-radius:12px;padding:20px;background:#0b0b0f;}
+.bracelet-section img{width:100%;max-width:300px;height:auto;border-radius:10px;background:#111;}
+.bracelet-section h2{margin:12px 0;color:#9ee7e1;}
+.bracelet-section p{color:#cfd8dc;font-size:14px;margin:4px 0;}
+.bracelet-section .details{font-size:12px;color:#777;margin-top:6px;}
+.btn{background:#fff;color:#000;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:700;margin-top:12px;}
+.field{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);width:100%;box-sizing:border-box;margin:8px 0;background:transparent;color:#fff;text-align:center;}
+footer{text-align:center;color:#9aa0a6;margin-top:40px;}
+</style>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AV2U61tna9MpX2ZAOEAwke5q0xtCdKZZiDxlaEQYmF1Ou3li-2JBNHVfXTYyFRDxE5Z8Y6OsQuinSk5t&currency=USD"></script>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>WONEUVWONE Store</h1>
+    <p>Exclusive one-of-one handmade bracelets by URIESCA — secure purchase via PayPal</p>
+  </header>
+
+  <section class="bracelet-section" itemscope itemtype="http://schema.org/Product">
+    <img src="bracelet-placeholder.jpg" alt="WONEUVWONE Handmade Bracelet" itemprop="image">
+    <h2 itemprop="name">WONEUVWONE Bracelet</h2>
+    <p itemprop="brand">Handmade by URIESCA</p>
+    <p class="details" itemprop="description">Made from virgin wood — natural, one-of-one collectible. Each bracelet comes with a unique code verified via phone.</p>
+    <p>Unique Code: <strong>WONE-ART-001</strong></p>
+    <p>Original Price: <strong>$24,547.42</strong></p>
+
+    <!-- Price escalation info -->
+    <p style="color:#cfd8dc; font-size:12px;">Price started at $0.11 and has escalated over time.</p>
+
+    <!-- Discount input -->
+    <input id="discountCode" class="field" placeholder="Enter discount code">
+    <p id="discountMsg" style="color:#9ee7e1; margin-top:4px;">
+      Price: $<span id="livePrice">24547.42</span>
+    </p>
+
+    <!-- Buyer info -->
+    <input id="buyerContact" class="field" placeholder="Email or phone for delivery">
+    <input id="buyerTxid" class="field" placeholder="PayPal transaction ID after payment">
+    <button class="btn" onclick="submitPaymentInfo()">Submit info</button>
+    <div id="submitMsg" style="margin-top:8px;color:#9ee7e1;"></div>
+
+    <!-- PayPal checkout -->
+    <div id="paypal-button-container" style="margin-top:20px;"></div>
+
+    <meta itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+      <meta itemprop="priceCurrency" content="USD">
+      <meta itemprop="price" content="24547.42">
+      <link itemprop="availability" href="http://schema.org/InStock">
+    </meta>
+  </section>
+
+  <footer>
+    <div>Contact: +1 YOUR_PHONE_NUMBER</div>
+    <div>Tip: Test a small purchase first if needed</div>
+  </footer>
+</div>
+
+<script>
+const DISCOUNT_CODE = "WONE99"; // 99% discount
+const originalPrice = 24547.42;  // current price
+const startingPrice = 0.11;      // starting price
+let usdValue = originalPrice;
+let discountApplied = false;
+
+const codeInput = document.getElementById('discountCode');
+const discountMsg = document.getElementById('discountMsg');
+const livePrice = document.getElementById('livePrice');
+
+livePrice.textContent = usdValue.toFixed(2);
+
+function submitPaymentInfo(){
+  const contact = document.getElementById('buyerContact').value.trim();
+  const txid = document.getElementById('buyerTxid').value.trim();
+  const msg = document.getElementById('submitMsg');
+  if(!contact || !txid){ msg.style.color='#f66'; msg.textContent='Please provide contact & PayPal ID'; return; }
+  const subs = JSON.parse(localStorage.getItem('wone_submissions')||'[]');
+  subs.unshift({id:Date.now(), contact, txid, items:'WONEUVWONE Bracelet', at: new Date().toISOString()});
+  localStorage.setItem('wone_submissions', JSON.stringify(subs));
+  msg.style.color='#9ee7e1'; msg.textContent='Submitted — you will receive your bracelet.';
+  document.getElementById('buyerContact').value=''; 
+  document.getElementById('buyerTxid').value='';
+}
+
+// Discount live update
+codeInput.addEventListener('input', () => {
+  if(codeInput.value.trim().toUpperCase() === DISCOUNT_CODE){
+    usdValue = originalPrice * 0.01; // 99% off
+    discountMsg.textContent = "99% discount applied! New price: $" + usdValue.toFixed(2);
+    livePrice.textContent = usdValue.toFixed(2);
+  } else {
+    usdValue = originalPrice;
+    discountMsg.textContent = "";
+    livePrice.textContent = usdValue.toFixed(2);
+  }
+});
+
+// PayPal button
+paypal.Buttons({
+  style:{layout:'vertical', color:'gold', shape:'rect', label:'pay'},
+  createOrder: function(data, actions) {
+    return actions.order.create({purchase_units:[{ amount:{ value: usdValue.toFixed(2) } }]});
+  },
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details){
+      alert('Payment complete. Transaction ID: ' + details.id + '. Submit your contact & txid below.');
+    });
+  },
+  onError: function(err){ alert('Payment error, try again later.'); console.error(err); }
+}).render('#paypal-button-container');
+
+</script>
+</body>
+</html>

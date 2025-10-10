@@ -26,6 +26,102 @@ header p{font-size:14px;color:#cfd8dc;margin-top:4px;}
 .btn{background:#fff;color:#000;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:700;margin-top:12px;}
 .field{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);width:100%;box-sizing:border-box;margin:8px 0;background:transparent;color:#fff;text-align:center;}
 footer{text-align:center;color:#9aa0a6;margin-top:40px;}
+/* === GALLERY SECTION === */
+.gallery-section {
+  margin-top: 40px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 20px;
+  background: #0b0b0f;
+}
+
+.gallery-section h2 {
+  color: #9ee7e1;
+  margin-bottom: 10px;
+}
+
+.gallery-section p {
+  color: #cfd8dc;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: #111;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(158, 231, 225, 0.4);
+}
+
+/* === LIGHTBOX === */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(158, 231, 225, 0.5);
+}
+
+.lightbox .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #9ee7e1;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.lightbox .close:hover {
+  color: #fff;
+}
+
+/* 🔄 Arrows */
+.lightbox .prev,
+.lightbox .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ee7e1;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.lightbox .prev:hover,
+.lightbox .next:hover {
+  color: #fff;
+}
+
+.lightbox .prev { left: 30px; }
+.lightbox .next { right: 30px; }
 </style>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AV2U61tna9MpX2ZAOEAwke5q0xtCdKZZiDxlaEQYmF1Ou3li-2JBNHVfXTYyFRDxE5Z8Y6OsQuinSk5t&currency=USD"></script>
@@ -66,7 +162,28 @@ footer{text-align:center;color:#9aa0a6;margin-top:40px;}
       <link itemprop="availability" href="http://schema.org/InStock">
     </meta>
   </section>
+<!-- 🔥 Gallery Section -->
+<section class="gallery-section">
+  <h2>Gallery — WONEUVWONE Craft</h2>
+  <p>Explore some of our handmade creations, each unique and one-of-one.</p>
+  
+  <div class="gallery-grid">
+    <img src="bracelet1.jpg" alt="Bracelet 1">
+    <img src="bracelet2.jpg" alt="Bracelet 2">
+    <img src="bracelet3.jpg" alt="Bracelet 3">
+    <img src="bracelet4.jpg" alt="Bracelet 4">
+    <img src="bracelet5.jpg" alt="Bracelet 5">
+    <img src="bracelet6.jpg" alt="Bracelet 6">
+  </div>
+</section>
 
+<!-- 🖼️ Lightbox Overlay -->
+<div id="lightbox" class="lightbox">
+  <span class="close">&times;</span>
+  <span class="prev">&#10094;</span>
+  <img class="lightbox-img" id="lightbox-img" alt="Enlarged Bracelet Image">
+  <span class="next">&#10095;</span>
+</div>
   <footer>
     <div>Contact: +1 870-273-3590 </div>
     <div>Tip: Test a small purchase first if needed</div>
@@ -126,6 +243,57 @@ paypal.Buttons({
   onError: function(err){ alert('Payment error, try again later.'); console.error(err); }
 }).render('#paypal-button-container');
 
+</script><script>
+// 🖼️ Lightbox with next/prev
+const galleryImgs = document.querySelectorAll('.gallery-grid img');
+const lightboxEl = document.getElementById('lightbox');
+const lightboxImgEl = document.getElementById('lightbox-img');
+const closeEl = document.querySelector('.lightbox .close');
+const prevEl = document.querySelector('.lightbox .prev');
+const nextEl = document.querySelector('.lightbox .next');
+
+let currentIndex = 0;
+
+function showImage(index) {
+  if (index < 0) index = galleryImgs.length - 1;
+  if (index >= galleryImgs.length) index = 0;
+  currentIndex = index;
+  lightboxImgEl.src = galleryImgs[currentIndex].src;
+}
+
+galleryImgs.forEach((img, i) => {
+  img.addEventListener('click', () => {
+    lightboxEl.style.display = 'flex';
+    showImage(i);
+  });
+});
+
+closeEl.addEventListener('click', () => {
+  lightboxEl.style.display = 'none';
+});
+
+prevEl.addEventListener('click', (e) => {
+  e.stopPropagation();
+  showImage(currentIndex - 1);
+});
+
+nextEl.addEventListener('click', (e) => {
+  e.stopPropagation();
+  showImage(currentIndex + 1);
+});
+
+lightboxEl.addEventListener('click', (e) => {
+  if (e.target === lightboxEl) lightboxEl.style.display = 'none';
+});
+
+// Keyboard control
+document.addEventListener('keydown', (e) => {
+  if (lightboxEl.style.display === 'flex') {
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+    if (e.key === 'Escape') lightboxEl.style.display = 'none';
+  }
+});
 </script>
 </body>
 </html>

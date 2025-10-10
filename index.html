@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WONEUVWONE  — Exclusive Handmade Bracelets </title>
-<meta name="description" content="Buy WONEUVWONE one-of-one handmade bracelets. Secure PayPal purchase. Each bracelet has a unique code verified via phone. Exclusive, collectible, premium.">
-<meta name="keywords" content="WONEUVWONE, handmade bracelet, unique bracelet, one-of-one, exclusive jewelry, WONEUVWONE, collectible bracelet, secure purchase, virgin wood bracelet">
+<title>WONEUVWONE  — digital art </title>
+<meta name="description" content="Buy WONEUVWONE one-of-one digital art. Secure PayPal purchase. Each art piece has a unique code verified via phone or via direct message in our instagram account. Exclusive, collectible, investment, asset.">
+<meta name="keywords" content="WONEUVWONE, digital art made to hold its value, unique art, one-of-one, exclusive, WONEUVWONE, collectible, secure purchase, ASSET">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="WONEUVWONE — Handmade Unique Bracelets">
-<meta property="og:description" content="Exclusive one-of-one handmade bracelets. Pay securely with PayPal. Each bracelet comes with a unique code verified via phone.">
-<meta property="og:image" content="bracelet-placeholder.jpg">
+<meta property="og:title" content="WONEUVWONE —  Unique investment">
+<meta property="og:description" content="Exclusive one-of-one digital art. Pay securely with PayPal. Each digital art piece comes with a unique code verified via phone or instagram DM.">
+<meta property="og:image" content="digital asset-placeholder.jpg">
 <meta property="og:type" content="website">
 
 <style>
@@ -35,23 +35,20 @@ footer{text-align:center;color:#9aa0a6;margin-top:40px;}
 <div class="wrap">
   <header>
     <h1>WONEUVWONE </h1>
-    <p>Exclusive one-of-one handmade bracelets — secure purchase via PayPal</p>
+    <p>Exclusive one-of-one digital art asset — secure purchase via PayPal</p>
   </header>
 
-  <section class="bracelet-section" itemscope itemtype="http://schema.org/Product">
-    <img src="bracelet-placeholder.jpg" alt="WONEUVWONE Handmade Bracelet" itemprop="image">
+  <section class=digital-section" itemscope itemtype="http://schema.org/Product">
+    <img src="digital-placeholder.jpg" alt="WONEUVWONE Handmade Bracelet" itemprop="image">
     <h2 itemprop="name">WONEUVWONE </h2>
-    <p itemprop="brand">Handmade by WONEUVWONE</p>
-    <p class="details" itemprop="description">Made from virgin wood — natural, one-of-one collectible. Each bracelet comes with a unique code verified via phone.</p>
-    <p>Original Price: <strong>$24,547.42</strong></p>
-
-    <!-- Price escalation info -->
-    <p style="color:#cfd8dc; font-size:12px;">Price started at $0.11 and has escalated over time.</p>
+    <p itemprop="brand">Only made by WONEUVWONE</p>
+    <p class="details" itemprop="description">Made to hold its value each art piece is one-of-one. Each digital art piece comes with a unique code verified via phone or Instagram DM.</p>
+    <p>Original Price: <strong>$1</strong></p>
 
     <!-- Discount input -->
     <input id="discountCode" class="field" placeholder="Enter discount code">
     <p id="discountMsg" style="color:#9ee7e1; margin-top:4px;">
-      Price: $<span id="livePrice">24547.42</span>
+      Price: $<span id="livePrice">$1</span>
     </p>
 
     <!-- Buyer info -->
@@ -65,20 +62,20 @@ footer{text-align:center;color:#9aa0a6;margin-top:40px;}
 
     <meta itemprop="offers" itemscope itemtype="http://schema.org/Offer">
       <meta itemprop="priceCurrency" content="USD">
-      <meta itemprop="price" content="24547.42">
+      <meta itemprop="price" content="$1">
       <link itemprop="availability" href="http://schema.org/InStock">
     </meta>
   </section>
 
   <footer>
-    <div>Contact: +1 YOUR_PHONE_NUMBER</div>
+    <div>Contact: +1 870-273-3590 </div>
     <div>Tip: Test a small purchase first if needed</div>
   </footer>
 </div>
 
 <script>
 const DISCOUNT_CODE = "WONE99"; // 99% discount
-const originalPrice = 24547.42;  // current price
+const originalPrice = 1;  // current price
 const startingPrice = 0.11;      // starting price
 let usdValue = originalPrice;
 let discountApplied = false;
@@ -95,7 +92,7 @@ function submitPaymentInfo(){
   const msg = document.getElementById('submitMsg');
   if(!contact || !txid){ msg.style.color='#f66'; msg.textContent='Please provide contact & PayPal ID'; return; }
   const subs = JSON.parse(localStorage.getItem('wone_submissions')||'[]');
-  subs.unshift({id:Date.now(), contact, txid, items:'WONEUVWONE Bracelet', at: new Date().toISOString()});
+  subs.unshift({id:Date.now(), contact, txid, items:'WONEUVWONE', at: new Date().toISOString()});
   localStorage.setItem('wone_submissions', JSON.stringify(subs));
   msg.style.color='#9ee7e1'; msg.textContent='Submitted — you will receive your bracelet.';
   document.getElementById('buyerContact').value=''; 

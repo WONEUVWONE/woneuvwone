@@ -125,5 +125,12 @@ window.addEventListener('scroll', () => {
   <p>Your purchase is secure. Code will be mailed with the art piece. Each verse is a one-of-one collectible.</p>
 </footer>
 
+  window.addEventListener('scroll', () => {
+  const section = document.querySelector('.growth-section');
+  const rect = section.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.8) {
+    section.classList.add('visible');
+  }
+});
 </body>
 </html>

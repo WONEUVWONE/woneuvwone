@@ -1,24 +1,16 @@
-let remaining = 4;
-let price = 12.50;
-
-function updateStats() {
-  document.getElementById('remaining').textContent = remaining;
-  document.getElementById('total-value').textContent = `$${((4 - remaining) * price).toFixed(2)}`;
-}
-
-// Initialize PayPal buttons
-for (let i = 1; i <= 4; i++) {
-  paypal.Buttons({
-    createOrder: (data, actions) => actions.order.create({
-      purchase_units: [{ amount: { value: price.toFixed(2) } }]
-    }),
-    onApprove: (data, actions) => actions.order.capture().then(details => {
-      alert('Payment complete. Your unique code will be sent via Instagram.');
-      remaining--;
-      updateStats();
-      document.getElementById(`paypal-button-container-${i}`).innerHTML = 'SOLD';
-    })
-  }).render(`#paypal-button-container-${i}`);
-}
-
-updateStats();
+paypal.Buttons({
+    createOrder: (data, actions) => {
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: '1.26' } // 90% off from 12.58
+            }]
+        });
+    },
+    onApprove: (data, actions) => {
+        return actions.order.capture().then(details => {
+            const email = document.getElementById('email').value.trim();
+            if(!email) return alert('Enter your email to receive your code.');
+            alert('Payment complete! Your code will be sent via our WONEUVWONE Instagram to: ' + email);
+        });
+    }
+}).render('#paypal-button-container');

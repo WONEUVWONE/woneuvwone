@@ -24,6 +24,80 @@
   <p>Every purchase increases the value of every art piece — truly one-of-one.</p>
 </section>
 
+  <section class="growth-section">
+  <h2>Growth Since 2022</h2>
+  <canvas id="growthChart"></canvas>
+
+  <div class="growth-stats">
+    <p><strong>Total Pieces Sold:</strong> 18,650</p>
+    <p><strong>Total Value:</strong> $68,390</p>
+    <p><strong>Collection Start:</strong> 2022</p>
+  </div>
+
+  <p class="growth-text">
+    Since its creation in 2022, WONEUVWONE has expanded with precision — one verse at a time.
+    Each digital piece represents a rare portion of the full collection, making every purchase
+    more scarce and valuable over time. The upward curve reflects real movement: a growing base
+    of collectors, rising demand, and an unrepeatable foundation built verse by verse.
+  </p>
+</section>
+
+<!-- Chart.js (add before </body>) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let chartCreated = false;
+
+function createGrowthChart() {
+  const ctx = document.getElementById('growthChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['2022', '2023', '2024', '2025'],
+      datasets: [{
+        label: 'Total Value ($)',
+        data: [12000, 28000, 47000, 68390],
+        borderColor: '#9ee7e1',
+        borderWidth: 3,
+        tension: 0.4,
+        fill: true,
+        backgroundColor: 'rgba(158,231,225,0.08)',
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    },
+    options: {
+      animation: {
+        duration: 2500,
+        easing: 'easeOutQuart'
+      },
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#bbb' },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        },
+        y: {
+          ticks: { color: '#bbb', callback: val => '$' + val.toLocaleString() },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        }
+      }
+    }
+  });
+}
+
+// Detect scroll into view
+window.addEventListener('scroll', () => {
+  const section = document.querySelector('.growth-section');
+  const rect = section.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.8 && !chartCreated) {
+    createGrowthChart();
+    chartCreated = true;
+  }
+});
+</script>
+  
 <section class="purchase-section">
   <h2>Current Verse Available</h2>
   <img src="images/current-art.png" alt="Current Verse Art" id="currentArt">

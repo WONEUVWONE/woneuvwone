@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WONEUVWONE — Digital Codes</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AV2U61tna9MpX2ZAOEAwke5q0xtCdKZZiDxlaEQYmF1Ou3li-2JBNHVfXTYyFRDxE5Z8Y6OsQuinSk5t&currency=USD"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>WONEUVWONE</h1>
+  <p>Assets — Digital Codes Collection</p>
+</header>
+
+<section class="stats">
+  <h2>Collection Stats</h2>
+  <p>Remaining Codes: <strong id="remaining">67761</strong></p>
+  <p>Total Collection Value: <strong id="total-value">$538,500</strong></p>
+</section>
+
+<section class="investment-info">
+  <h2>Investment Opportunity</h2>
+  <p>Each of the 111,111 codes is one-of-one. Every purchase increases the value of the remaining codes. This is a finite digital asset — once sold, it can never be purchased again. Codes are delivered via our WONEUVWONE Instagram account to confirm authenticity. Investing now ensures a rare piece of this collection.</p>
+</section>
+
+<section class="purchase">
+  <h2>Purchase a Digital Code</h2>
+  <p>Price: $12.58 <span class="discount">Use 90% off code: WONE90</span></p>
+  <div id="paypal-button-container"></div>
+</section>
+
+<section class="investment-graph">
+  <h2>Investment Growth</h2>
+  <canvas id="investmentChart" width="400" height="200"></canvas>
+</section>
+
+<section class="code-lookup">
+  <h2>Verify Your Code</h2>
+  <p>Enter your unique code delivered via Instagram:</p>
+  <input type="text" id="codeInput" placeholder="Enter your code (e.g. WONE-0451)">
+  <button onclick="lookupCode()">Lookup</button>
+  <div id="codeResult"></div>
+</section>
+
+<footer>
+  <p>&copy; 2022 WONEUVWONE</p>
+</footer>
+
+</body>
+</html>

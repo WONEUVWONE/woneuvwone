@@ -66,3 +66,20 @@ new Chart(ctx, {
     }
   }
 });
+
+// --- DISCOUNT CODE LOGIC ---
+let originalPrice = 12.58; // Base price
+let currentPrice = originalPrice;
+
+function applyDiscount() {
+  const enteredCode = document.getElementById("discountCode").value.trim().toUpperCase();
+  const priceDisplay = document.getElementById("priceDisplay");
+
+  if (enteredCode === "WONE90") {
+    currentPrice = originalPrice * 0.1; // 90% off
+    priceDisplay.textContent = `Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;
+  } else {
+    currentPrice = originalPrice;
+    priceDisplay.textContent = `Invalid Code ❌ Price: $${originalPrice.toFixed(2)}`;
+  }
+}

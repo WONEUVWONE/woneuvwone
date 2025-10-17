@@ -8,7 +8,7 @@ document.getElementById('total-value').textContent = `$${totalValue.toLocaleStri
 // PayPal Button
 paypal.Buttons({
   createOrder: (data, actions) => actions.order.create({
-    purchase_units: [{ amount: { value: '12.58' } }]
+    purchase_units: [{ amount: { value: currentPrice.toFixed(2) } }]
   }),
   onApprove: (data, actions) => actions.order.capture().then(details => {
     alert('Purchase complete! We will send your code via our WONEUVWONE Instagram account.');

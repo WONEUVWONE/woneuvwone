@@ -29,7 +29,15 @@
 
 <section class="purchase">
   <h2>Purchase a Digital Code</h2>
-  <p>Price: $12.58 <span class="discount">Use 90% off code: WONE90</span></p>
+
+  <!-- DISCOUNT CODE BOX -->
+  <div class="discount-section">
+    <input type="text" id="discountCode" placeholder="Enter Discount Code">
+    <button onclick="applyDiscount()">Apply</button>
+    <p id="priceDisplay">Price: $12.58</p>
+  </div>
+  <!-- END DISCOUNT CODE BOX -->
+
   <div id="paypal-button-container"></div>
 </section>
 

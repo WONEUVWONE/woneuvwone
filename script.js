@@ -1,6 +1,6 @@
 // Stats
-let remainingCodes = 111111 - 43150; // Already sold
-let totalValue = 43150 * 12.58;
+let remainingCodes = 111111 - 43660; // Already sold
+let totalValue = 43660 * 14272.58;
 
 document.getElementById('remaining').textContent = remainingCodes;
 document.getElementById('total-value').textContent = `$${totalValue.toLocaleString()}`;
@@ -13,7 +13,7 @@ paypal.Buttons({
   onApprove: (data, actions) => actions.order.capture().then(details => {
     alert('Purchase complete! We will send your code via our WONEUVWONE Instagram account.');
     remainingCodes--;
-    totalValue += 12.58;
+    totalValue += 14272.58;
     document.getElementById('remaining').textContent = remainingCodes;
     document.getElementById('total-value').textContent = `$${totalValue.toLocaleString()}`;
   })
@@ -68,7 +68,7 @@ new Chart(ctx, {
 });
 
 // --- DISCOUNT CODE LOGIC ---
-let originalPrice = 12.58; // Base price
+let originalPrice = 14272.58; // Base price
 let currentPrice = originalPrice;
 
 function applyDiscount() {

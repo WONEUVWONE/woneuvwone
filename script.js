@@ -1,85 +1,61 @@
-// Stats
-let remainingCodes = 111111 - 43660; // Already sold
-let totalValue = 43660 * 14272.58;
+document.addEventListener('DOMContentLoaded', () => {
+  const remainingEl = document.getElementById('remaining');
+  const totalValueEl = document.getElementById('total-value');
+  const priceDisplay = document.getElementById('priceDisplay');
+  const hiddenPrice = document.getElementById('hiddenPrice');
 
-document.getElementById('remaining').textContent = remainingCodes;
-document.getElementById('total-value').textContent = `$${totalValue.toLocaleString()}`;
+  let sold = 43660;
+  const totalSupply = 111111;
+  let remaining = totalSupply - sold;
+  let originalPrice = 14272.58;
+  let currentPrice = originalPrice;
+  let totalValue = sold * originalPrice;
 
-// PayPal Button
-paypal.Buttons({
-  createOrder: (data, actions) => actions.order.create({
-    purchase_units: [{ amount: { value: currentPrice.toFixed(2) } }]
-  }),
-  onApprove: (data, actions) => actions.order.capture().then(details => {
-    alert('Purchase complete! We will send your code via our WONEUVWONE Instagram account.');
-    remainingCodes--;
-    totalValue += 14272.58;
-    document.getElementById('remaining').textContent = remainingCodes;
-    document.getElementById('total-value').textContent = `$${totalValue.toLocaleString()}`;
-  })
-}).render('#paypal-button-container');
+  remainingEl.textContent = remaining;
+  totalValueEl.textContent = `$${totalValue.toLocaleString()}`;
+  priceDisplay.textContent = `Price: $${originalPrice.toFixed(2)}`;
 
-// Code Lookup
-function lookupCode() {
-  const code = document.getElementById('codeInput').value.trim().toUpperCase();
-  const codeResult = document.getElementById('codeResult');
-  if(!code) return alert('Enter a code.');
-  
-  // No verses shown, just error if invalid
-  codeResult.innerHTML = `<p style="color:#ff4d4d;">Error: This code is invalid or has not been verified yet.</p>`;
-}
-
-// Investment Graph
-const ctx = document.getElementById('investmentChart').getContext('2d');
-const years = ['2022', '2023', '2024', '2025'];
-const codesSold = [0, 15000, 30000, 43150];
-const totalValueData = codesSold.map(s => s * 12.58);
-
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: years,
-    datasets: [{
-      label: 'Codes Sold',
-      data: codesSold,
-      borderColor: '#9ee7e1',
-      backgroundColor: 'rgba(158,231,225,0.2)',
-      fill: true,
-      tension: 0.3
-    },{
-      label: 'Total Value ($)',
-      data: totalValueData,
-      borderColor: '#ffcc00',
-      backgroundColor: 'rgba(255,204,0,0.2)',
-      fill: true,
-      tension: 0.3,
-      yAxisID: 'y1'
-    }]
-  },
-  options: {
-    responsive: true,
-    interaction: { mode: 'index', intersect: false },
-    stacked: false,
-    scales: {
-      y: { type: 'linear', position: 'left', title: { display: true, text: 'Codes Sold' }},
-      y1: { type: 'linear', position: 'right', title: { display: true, text: 'Total Value ($)' }, grid: { drawOnChartArea: false }}
+  // Discount
+  document.getElementById('applyDiscountBtn').addEventListener('click', () => {
+    const code = (document.getElementById('discountCode').value || '').trim().toUpperCase();
+    if (code === '8164ARY678') {
+      currentPrice = originalPrice * 0.05; // 95% off
+      priceDisplay.textContent = `Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;
+    } else if (code === 'WONE90') {
+      currentPrice = originalPrice * 0.1;
+      priceDisplay.textContent = `Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;
+    } else {
+      currentPrice = originalPrice;
+      priceDisplay.textContent = `Invalid Code ❌ Price: $${originalPrice.toFixed(2)}`;
     }
+    hiddenPrice.value = currentPrice.toFixed(2);
+    renderPaypalButtons();
+  });
+
+  // PayPal button
+  function renderPaypalButtons() {
+    const container = document.getElementById('paypal-button-container');
+    if (!container || !window.paypal) return;
+    container.innerHTML = '';
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{ amount: { value: currentPrice.toFixed(2) }, description: "WONEUVWONE — One-of-one code" }]
+      }),
+      onApprove: (data, actions) => actions.order.capture().then(details => {
+        hiddenPrice.value = currentPrice.toFixed(2);
+        document.getElementById('orderForm').submit();
+        alert('Payment complete! Order info sent via email.');
+        remaining--;
+        totalValue += currentPrice;
+        remainingEl.textContent = remaining;
+        totalValueEl.textContent = `$${totalValue.toLocaleString()}`;
+      }),
+      onError: (err) => { console.error(err); alert('Payment error.'); }
+    }).render('#paypal-button-container');
   }
-});
+  renderPaypalButtons();
 
-// --- DISCOUNT CODE LOGIC ---
-let originalPrice = 14272.58; // Base price
-let currentPrice = originalPrice;
-
-function applyDiscount() {
-  const enteredCode = document.getElementById("discountCode").value.trim().toUpperCase();
-  const priceDisplay = document.getElementById("priceDisplay");
-
-  if (enteredCode === "WONE90") {
-    currentPrice = originalPrice * 0.1; // 90% off
-    priceDisplay.textContent = `Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;
-  } else {
-    currentPrice = originalPrice;
-    priceDisplay.textContent = `Invalid Code ❌ Price: $${originalPrice.toFixed(2)}`;
-  }
-}
+  // Code lookup demo
+  window.lookupCode = function() {
+    const code = (document.getElementById('codeInput').value

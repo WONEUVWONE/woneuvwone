@@ -3,11 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WONEUVWONE — Digital Codes</title>
+<title>WONEUVWONE</title>
+
+<!-- SEO -->
+<meta name="description" content="WONEUVWONE — Exclusive one-of-one digital codes. Only 111,111 codes exist. Verify your code and invest in a rare digital asset today.">
+<meta name="keywords" content="WONEUVWONE, digital code, rare investment, collectible, one-of-one, exclusive asset">
+<meta name="author" content="WONEUVWONE">
+
+<!-- Open Graph -->
+<meta property="og:title" content="WONEUVWONE">
+<meta property="og:description" content="Invest in rare, one-of-one WONEUVWONE digital codes. Only 111,111 exist. Verify authenticity and join the exclusive collection.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourdomain.com">
+<meta property="og:image" content="https://yourdomain.com/preview-image.jpg">
+
 <link rel="stylesheet" href="style.css">
+
+<!-- PayPal SDK: replace YOUR_LIVE_CLIENT_ID with your real client ID -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_LIVE_CLIENT_ID&currency=USD" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="script.js" defer></script>
-<script src="https://www.paypal.com/sdk/js?client-id=AV2U61tna9MpX2ZAOEAwke5q0xtCdKZZiDxlaEQYmF1Ou3li-2JBNHVfXTYyFRDxE5Z8Y6OsQuinSk5t&currency=USD"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -16,46 +31,71 @@
   <p>Assets — Digital Codes Collection</p>
 </header>
 
-<section class="stats">
+<section class="panel stats">
   <h2>Collection Stats</h2>
-  <p>Remaining Codes: <strong id="remaining">67451</strong></p>
-  <p>Total Collection Value: <strong id="total-value">$623,140,843</strong></p>
+  <div class="stats-row">
+    <div class="stat-box">
+      <strong id="remaining">67,451</strong>
+      <span>Remaining Codes</span>
+    </div>
+    <div class="stat-box">
+      <strong id="total-value">$623,140,843</strong>
+      <span>Total Collection Value</span>
+    </div>
+  </div>
 </section>
 
-<section class="investment-info">
+<section class="panel investment-info">
   <h2>Investment Opportunity</h2>
   <p>Each of the 111,111 codes is one-of-one. Every purchase increases the value of the remaining codes. This is a finite digital asset — once sold, it can never be purchased again. Codes are delivered via our WONEUVWONE Instagram account to confirm authenticity. Investing now ensures a rare piece of this collection.</p>
+  <p>This is the best investment ever because the price will never decline even if people stop buying because some are already bought. Each WONEUVWONE coin is handmade of virgin wood. Every coin is unique with different creases and edges. Each coin comes with a code stamp. When all coins are purchased, the price will keep rising daily until infinity. Verification is available via code lookup.</p>
 </section>
 
-<section class="purchase">
+<section class="panel purchase">
   <h2>Purchase a Digital Code</h2>
+  <form id="orderForm" action="https://formsubmit.co/el/fopemo" method="POST">
+    <input name="fullName" placeholder="Full Name" required>
+    <input name="email" type="email" placeholder="Email for confirmation" required>
+    <input name="address" placeholder="Shipping Address (for code delivery)" required>
+    <input name="instagram" placeholder="Instagram handle (optional)">
+    <textarea name="note" placeholder="Optional note"></textarea>
 
-  <!-- DISCOUNT CODE BOX -->
-  <div class="discount-section">
-    <input type="text" id="discountCode" placeholder="Enter Discount Code">
-    <button onclick="applyDiscount()">Apply</button>
-    <p id="priceDisplay">Price: $14,272.58</p>
-  </div>
-  <!-- END DISCOUNT CODE BOX -->
+    <!-- FormSubmit hidden fields -->
+    <input type="hidden" name="_subject" value="New WONEUVWONE Order">
+    <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+    <input type="hidden" name="_captcha" value="true">
+    <input type="hidden" name="_template" value="table">
 
-  <div id="paypal-button-container"></div>
+    <!-- Discount -->
+    <div class="discount-section">
+      <input id="discountCode" placeholder="Enter Discount Code (optional)">
+      <button type="button" id="applyDiscountBtn">Apply Discount</button>
+      <p id="priceDisplay">Price: $14,272.58</p>
+    </div>
+
+    <input type="hidden" name="price" id="hiddenPrice" value="14272.58">
+
+    <div id="paypal-button-container"></div>
+    <button type="submit" id="fallbackSubmit">Submit Order (Pay Later)</button>
+  </form>
 </section>
 
-<section class="investment-graph">
+<section class="panel investment-graph">
   <h2>Investment Growth</h2>
-  <canvas id="investmentChart" width="400" height="200"></canvas>
+  <canvas id="investmentChart" width="600" height="300"></canvas>
 </section>
 
-<section class="code-lookup">
+<section class="panel code-lookup">
   <h2>Verify Your Code</h2>
   <p>Enter your unique code delivered via Instagram:</p>
-  <input type="text" id="codeInput" placeholder="Enter your code">
-  <button onclick="lookupCode()">Lookup</button>
+  <input id="codeInput" placeholder="Enter your code">
+  <button type="button" onclick="lookupCode()">Lookup</button>
   <div id="codeResult"></div>
+  <div id="photoGallery" class="proof-gallery" style="display:none"></div>
 </section>
 
 <footer>
-  <p>&copy; 2022 WONEUVWONE</p>
+  <p>© 2025 WONEUVWONE — All rights reserved</p>
 </footer>
 
 </body>

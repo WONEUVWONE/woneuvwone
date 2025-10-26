@@ -5,23 +5,19 @@ body {
   margin: 0;
   padding: 0;
 }
-
 header, section {
   text-align: center;
   padding: 20px;
 }
-
 header h1 {
   font-size: 48px;
   color: #9ee7e1;
 }
-
 h2 {
   color: #9ee7e1;
   margin-bottom: 10px;
 }
-
-.stats, .investment-info, .purchase, .investment-graph, .code-lookup {
+.panel {
   background: #0b0b0f;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
@@ -29,30 +25,26 @@ h2 {
   padding: 20px;
   max-width: 900px;
 }
-
-input, button {
-  margin: 10px auto;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: #111;
-  color: #fff;
-  width: 80%;
-  text-align: center;
+input, button, textarea {
+  display:block;
+  margin:10px auto;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:#111;
+  color:#fff;
+  width:80%;
+  text-align:center;
 }
-
 button {
-  background: #9ee7e1;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
+  background:#9ee7e1;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
 }
-
 button:hover {
-  background: #fff;
+  background:#fff;
 }
-
-.discount {
-  color: #ffcc00;
-  font-weight: bold;
-}
+.discount { color: #ffcc00; font-weight:bold; }
+#paypal-button-container { margin:20px auto; }
+.proof-gallery img { width:160px; height:160px; object-fit:cover; margin:6px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); }

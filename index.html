@@ -22,14 +22,15 @@ body { background:#000; color:#fff; font-family:'Inter', Arial, sans-serif; marg
 header, section { text-align:center; padding:20px; }
 header h1 { font-size:48px; color:#9ee7e1; margin:0; }
 h2 { color:#9ee7e1; margin-bottom:10px; }
-.stats, .investment-info, .investment-graph, #purchase-form, .code-lookup { background:#0b0b0f; border:1px solid rgba(255,255,255,0.08); border-radius:12px; margin:20px auto; padding:20px; max-width:900px; opacity:0; transition:opacity 1s ease; }
+.stats, .investment-info, .investment-graph, .code-lookup { background:#0b0b0f; border:1px solid rgba(255,255,255,0.08); border-radius:12px; margin:20px auto; padding:20px; max-width:900px; opacity:0; transition:opacity 1s ease; }
 input, button, textarea { margin:10px auto; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:#111; color:#fff; width:80%; text-align:center; display:block; }
 button { background:#9ee7e1; color:#000; font-weight:bold; cursor:pointer; }
 button:hover { background:#fff; }
 .discount { color:#ffcc00; font-weight:bold; }
 #paypal-button-container { margin:20px auto; }
-.sticky-purchase { position:sticky; top:10px; z-index:1000; }
+.sticky-purchase { position:fixed; bottom:0; left:0; width:100%; background:#0b0b0f; border-top:2px solid #9ee7e1; z-index:999; padding:15px 0; }
 #priceRiseIndicator { color:#ffcc00; font-weight:bold; font-size:18px; margin-bottom:10px; }
+@media(min-width:900px){ .sticky-purchase{position:relative; border:none; padding:20px; margin:20px auto; max-width:900px;} }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -39,7 +40,7 @@ button:hover { background:#fff; }
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- Fade in sections ---
-  const fadeSections = document.querySelectorAll('.stats, .investment-info, .investment-graph, #purchase-form, .code-lookup');
+  const fadeSections = document.querySelectorAll('.stats, .investment-info, .investment-graph, .code-lookup');
   fadeSections.forEach(s=>{setTimeout(()=>{s.style.opacity=1;},200);});
 
   // --- Stats ---
@@ -159,8 +160,42 @@ document.addEventListener('DOMContentLoaded', () => {
   <canvas id="investmentChart" width="400" height="200"></canvas>
 </section>
 
+<!-- PURCHASE SECTION -->
 <section id="purchase-form" class="sticky-purchase">
-  <h2>Purchase & Verification</h2>
-  <div class="discount-section">
-    <input type="text" id="discountCode" placeholder="Enter Discount Code">
-    <button type="button" id="apply
+  <h2>Purchase a Digital Code</h2>
+  <p id="priceRiseIndicator">Price is rising daily!</p>
+  
+  <form id="orderForm" action="https://formsubmit.co/el/fopemo" method="POST">
+    <input type="text" name="fullName" placeholder="Full Name" required>
+    <input type="text" name="emailOrPhone" placeholder="Email or Phone for confirmation" required>
+    <input type="text" name="address" placeholder="Shipping Address" required>
+
+    <input type="hidden" name="_subject" value="New WONEUVWONE Order">
+    <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+    <input type="hidden" name="_captcha" value="true">
+    <input type="hidden" name="_template" value="table">
+
+    <div class="discount-section">
+      <input type="text" id="discountCode" placeholder="Enter Discount Code">
+      <button type="button" id="applyDiscountBtn">Apply</button>
+      <p id="priceDisplay">Price: $14,272.58</p>
+    </div>
+
+    <div id="paypal-button-container"></div>
+  </form>
+</section>
+
+<!-- CODE LOOKUP -->
+<section class="code-lookup">
+  <h2>Verify Your Code</h2>
+  <p>Enter your unique code delivered via Instagram:</p>
+  <input type="text" id="codeInput" placeholder="Enter your code">
+  <button onclick="lookupCode()">Lookup</button>
+  <div id="codeResult"></div>
+</section>
+
+<footer>
+  <p>&copy; 2025 WONEUVWONE</p>
+</footer>
+</body>
+</html>

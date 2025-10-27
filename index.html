@@ -6,23 +6,134 @@
 <title>WONEUVWONE</title>
 
 <!-- SEO -->
-<meta name="description" content="WONEUVWONE — Exclusive one-of-one digital codes. Only 111,111 codes exist. Verify your code via Instagram and invest in a rare digital asset today.">
+<meta name="description" content="WONEUVWONE — Exclusive one-of-one digital codes. Only 111,111 codes exist. Verify your code and invest in a rare digital asset today.">
 <meta name="keywords" content="WONEUVWONE, digital code, rare investment, collectible, one-of-one, exclusive asset">
 <meta name="author" content="WONEUVWONE">
 
 <!-- Open Graph -->
 <meta property="og:title" content="WONEUVWONE">
-<meta property="og:description" content="Invest in rare, one-of-one WONEUVWONE digital codes. Only 111,111 exist. Verify authenticity via Instagram and join the exclusive collection.">
+<meta property="og:description" content="Invest in rare, one-of-one WONEUVWONE digital codes. Only 111,111 exist. Verify authenticity and join the exclusive collection.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yourdomain.com">
 <meta property="og:image" content="https://yourdomain.com/preview-image.jpg">
 
-<link rel="stylesheet" href="style.css">
+<style>
+body { background:#000; color:#fff; font-family:'Inter', Arial, sans-serif; margin:0; padding:0; }
+header, section { text-align:center; padding:20px; }
+header h1 { font-size:48px; color:#9ee7e1; margin:0; }
+h2 { color:#9ee7e1; margin-bottom:10px; }
+.stats, .investment-info, .investment-graph, #purchase-form, .code-lookup { background:#0b0b0f; border:1px solid rgba(255,255,255,0.08); border-radius:12px; margin:20px auto; padding:20px; max-width:900px; opacity:0; transition:opacity 1s ease; }
+input, button, textarea { margin:10px auto; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:#111; color:#fff; width:80%; text-align:center; display:block; }
+button { background:#9ee7e1; color:#000; font-weight:bold; cursor:pointer; }
+button:hover { background:#fff; }
+.discount { color:#ffcc00; font-weight:bold; }
+#paypal-button-container { margin:20px auto; }
+.sticky-purchase { position:sticky; top:10px; z-index:1000; }
+#priceRiseIndicator { color:#ffcc00; font-weight:bold; font-size:18px; margin-bottom:10px; }
+</style>
 
-<!-- PayPal SDK — REPLACE YOUR_LIVE_CLIENT_ID -->
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_LIVE_CLIENT_ID&currency=USD" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<script src="script.js" defer></script>
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_HERE&currency=USD" defer></script>
+
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // --- Fade in sections ---
+  const fadeSections = document.querySelectorAll('.stats, .investment-info, .investment-graph, #purchase-form, .code-lookup');
+  fadeSections.forEach(s=>{setTimeout(()=>{s.style.opacity=1;},200);});
+
+  // --- Stats ---
+  let remainingCodes = 111111 - 43660;
+  let totalValue = 43660 * 14272.58;
+  document.getElementById('remaining').textContent = remainingCodes.toLocaleString();
+  document.getElementById('total-value').textContent = `$${totalValue.toLocaleString()}`;
+
+  // --- Investment Graph ---
+  const ctx = document.getElementById('investmentChart').getContext('2d');
+  const years = ['2022','2023','2024','2025'];
+  const codesSold = [0,15000,30000,43150];
+  const totalValueData = codesSold.map(s=>s*12.58);
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:years,
+      datasets:[
+        { label:'Codes Sold', data:codesSold, borderColor:'#9ee7e1', backgroundColor:'rgba(158,231,225,0.2)', fill:true, tension:0.3 },
+        { label:'Total Value ($)', data:totalValueData, borderColor:'#ffcc00', backgroundColor:'rgba(255,204,0,0.2)', fill:true, tension:0.3, yAxisID:'y1' }
+      ]
+    },
+    options:{
+      responsive:true,
+      interaction:{mode:'index', intersect:false},
+      stacked:false,
+      scales:{
+        y:{type:'linear', position:'left', title:{display:true,text:'Codes Sold'}},
+        y1:{type:'linear', position:'right', title:{display:true,text:'Total Value ($)'}, grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+
+  // --- Dynamic Daily Price ---
+  const originalPrice = 14272.58;
+  let currentPrice = originalPrice;
+  const priceDisplay = document.getElementById('priceDisplay');
+  const priceRiseIndicator = document.getElementById('priceRiseIndicator');
+
+  function getDaysSinceStart() {
+    const start = new Date('2022-01-01');
+    const now = new Date();
+    const diffTime = Math.abs(now - start);
+    return Math.floor(diffTime / (1000*60*60*24));
+  }
+
+  function updateDynamicPrice() {
+    const days = getDaysSinceStart();
+    const dailyIncreaseRate = 0.005;
+    currentPrice = originalPrice * Math.pow(1 + dailyIncreaseRate, days);
+    priceDisplay.textContent = `Price: $${currentPrice.toFixed(2)}`;
+    priceRiseIndicator.textContent = `Price has increased $${(currentPrice-originalPrice).toFixed(2)} since launch! 🔥`;
+  }
+  updateDynamicPrice();
+  setInterval(updateDynamicPrice, 60000);
+
+  // --- Discount Codes ---
+  document.getElementById('applyDiscountBtn').addEventListener('click', ()=>{
+    const code=(document.getElementById('discountCode').value||'').trim().toUpperCase();
+    if(code==='8164ARY678'){ currentPrice*=0.05; priceDisplay.textContent=`Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;}
+    else if(code==='WONE90'){ currentPrice*=0.1; priceDisplay.textContent=`Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;}
+    else{ updateDynamicPrice(); priceDisplay.textContent=`Invalid Code ❌ Price: $${currentPrice.toFixed(2)}`;}
+    renderPaypalButtons();
+  });
+
+  // --- PayPal ---
+  function renderPaypalButtons(){
+    const container=document.getElementById('paypal-button-container');
+    if(!container) return;
+    container.innerHTML='';
+    paypal.Buttons({
+      style:{layout:'vertical', color:'gold', shape:'rect', label:'pay'},
+      createOrder:(data,actions)=>actions.order.create({purchase_units:[{amount:{value:currentPrice.toFixed(2)}, description:"WONEUVWONE — One-of-one code"}]}),
+      onApprove:(data,actions)=>actions.order.capture().then(details=>{
+        alert('Purchase complete! You will receive your code via email or phone confirmation.');
+        remainingCodes--; totalValue+=currentPrice;
+        document.getElementById('remaining').textContent=remainingCodes.toLocaleString();
+        document.getElementById('total-value').textContent=`$${totalValue.toLocaleString()}`;
+      }),
+      onError:(err)=>{ console.error(err); alert('Payment error. Please try again.');}
+    }).render('#paypal-button-container');
+  }
+  renderPaypalButtons();
+
+  // --- Code Lookup ---
+  window.lookupCode=function(){
+    const code=(document.getElementById('codeInput').value||'').trim().toUpperCase();
+    const codeResult=document.getElementById('codeResult');
+    if(!code) return alert('Enter a code.');
+    codeResult.innerHTML=`<p style="color:#ff4d4d;">Error: This code is invalid or has not been verified yet.</p>`;
+  }
+
+});
+</script>
 </head>
 <body>
 
@@ -31,74 +142,25 @@
   <p>Assets — Digital Codes Collection</p>
 </header>
 
-<section class="panel stats">
+<section class="stats">
   <h2>Collection Stats</h2>
-  <div class="stats-row">
-    <div class="stat-box">
-      <strong id="remaining">67451</strong>
-      <span>Remaining Codes</span>
-    </div>
-    <div class="stat-box">
-      <strong id="total-value">$623,140,843</strong>
-      <span>Total Collection Value</span>
-    </div>
-  </div>
+  <p>Remaining Codes: <strong id="remaining">67451</strong></p>
+  <p>Total Collection Value: <strong id="total-value">$623,140,843</strong></p>
 </section>
 
-<section class="panel investment-info">
+<section class="investment-info">
   <h2>Investment Opportunity</h2>
   <p>Each of the 111,111 codes is one-of-one. Every purchase increases the value of the remaining codes. This is a finite digital asset — once sold, it can never be purchased again.</p>
-  <p>This is the best investment ever because the price will never decline even if people stop buying. Each WONEUVWONE coin is handmade of virgin wood. Every coin is unique with different creases and edges, and comes with a code stamp.</p>
-  <p>When buying or selling, DM your code to our <strong>WONEUVWONE Instagram account</strong>. We will send you detailed photos of that exact coin linked to your code. You can compare and verify authenticity visually. Verification is also available via the code lookup section below.</p>
+  <p>This is the best investment ever because the price will never decline even if people stop buying. Each WONEUVWONE coin is handmade of virgin wood. Every coin is unique with different creases and edges. Each coin comes with a code stamp. When all coins are purchased, the price will keep rising daily until infinity. Verification is available via code lookup. DM us on WONEUVWONE Instagram to receive verification photos linked to your code.</p>
 </section>
 
-<section class="panel purchase">
-  <h2>Purchase a Digital Code</h2>
-  <form id="orderForm" action="https://formsubmit.co/el/fopemo" method="POST">
-    <input name="fullName" placeholder="Full Name" required>
-    <input name="email" type="email" placeholder="Email for confirmation" required>
-    <input name="address" placeholder="Shipping Address (for code delivery)" required>
-    <input name="instagram" placeholder="Instagram handle (optional)">
-    <textarea name="note" placeholder="Optional note" rows="3"></textarea>
-
-    <!-- FormSubmit hidden fields -->
-    <input type="hidden" name="_subject" value="New WONEUVWONE Order">
-    <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
-    <input type="hidden" name="_captcha" value="true">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="price" id="hiddenPrice" value="14272.58">
-
-    <!-- Discount Section -->
-    <div class="discount-section">
-      <input id="discountCode" placeholder="Enter Discount Code (optional)">
-      <button type="button" id="applyDiscountBtn">Apply Discount</button>
-      <p id="priceDisplay">Price: $14,272.58</p>
-    </div>
-
-    <!-- PayPal Button -->
-    <div id="paypal-button-container"></div>
-
-    <!-- Fallback submit button -->
-    <button type="submit" id="fallbackSubmit">Submit Order (Pay Later)</button>
-  </form>
-</section>
-
-<section class="panel investment-graph">
+<section class="investment-graph">
   <h2>Investment Growth</h2>
-  <canvas id="investmentChart" width="600" height="300"></canvas>
+  <canvas id="investmentChart" width="400" height="200"></canvas>
 </section>
 
-<section class="panel code-lookup">
-  <h2>Verify Your Code</h2>
-  <p>Enter your unique code delivered via Instagram:</p>
-  <input id="codeInput" placeholder="Enter your code">
-  <button type="button" onclick="lookupCode()">Lookup</button>
-  <div id="codeResult"></div>
-</section>
-
-<footer>
-  <p>© 2025 WONEUVWONE — All rights reserved</p>
-</footer>
-
-</body>
-</html>
+<section id="purchase-form" class="sticky-purchase">
+  <h2>Purchase & Verification</h2>
+  <div class="discount-section">
+    <input type="text" id="discountCode" placeholder="Enter Discount Code">
+    <button type="button" id="apply

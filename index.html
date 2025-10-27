@@ -28,7 +28,7 @@ button { background:#9ee7e1; color:#000; font-weight:bold; cursor:pointer; }
 button:hover { background:#fff; }
 #paypal-button-container { margin:20px auto; max-width:300px; }
 .discount-section { margin-top:20px; }
-#investmentChart { max-width:100%; height:auto; margin:20px auto; }
+#investmentChart { width:100% !important; height:400px !important; margin:0 auto; }
 #codeResult { margin-top:10px; }
 </style>
 
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   document.getElementById('applyDiscountBtn').addEventListener('click',()=>{
     const entered = (document.getElementById('discountCode').value||'').trim().toUpperCase();
-    if(entered==='8164ARY678'){ currentPrice = originalPrice*0.05; }
-    else if(entered==='WONE90'){ currentPrice = originalPrice*0.1; }
+    if(entered==='8164ARY678'){ currentPrice = originalPrice*0.05; } // 95% off
+    else if(entered==='WONE90'){ currentPrice = originalPrice*0.1; } // 90% off
     else{ currentPrice = originalPrice; }
     priceDisplay.textContent=`Price: $${currentPrice.toFixed(2)}`;
     renderPaypalButtons();
@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       }
     }
   });
+
 });
 </script>
 </head>
@@ -153,7 +154,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <section class="investment-graph">
   <h2>Investment Growth</h2>
-  <canvas id="investmentChart" width="400" height="200"></canvas>
+  <div style="max-width:900px; margin:0 auto;">
+    <canvas id="investmentChart"></canvas>
+  </div>
 </section>
 
 <section class="code-lookup">

@@ -6,20 +6,20 @@
 <title>WONEUVWONE</title>
 
 <!-- SEO -->
-<meta name="description" content="WONEUVWONE — Exclusive one-of-one digital codes. Only 111,111 codes exist. Verify your code and invest in a rare digital asset today.">
+<meta name="description" content="WONEUVWONE — Exclusive one-of-one digital codes. Only 111,111 codes exist. Verify your code via Instagram and invest in a rare digital asset today.">
 <meta name="keywords" content="WONEUVWONE, digital code, rare investment, collectible, one-of-one, exclusive asset">
 <meta name="author" content="WONEUVWONE">
 
 <!-- Open Graph -->
 <meta property="og:title" content="WONEUVWONE">
-<meta property="og:description" content="Invest in rare, one-of-one WONEUVWONE digital codes. Only 111,111 exist. Verify authenticity and join the exclusive collection.">
+<meta property="og:description" content="Invest in rare, one-of-one WONEUVWONE digital codes. Only 111,111 exist. Verify authenticity via Instagram and join the exclusive collection.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yourdomain.com">
 <meta property="og:image" content="https://yourdomain.com/preview-image.jpg">
 
 <link rel="stylesheet" href="style.css">
 
-<!-- PayPal SDK: replace YOUR_LIVE_CLIENT_ID with your real client ID -->
+<!-- PayPal SDK — REPLACE YOUR_LIVE_CLIENT_ID -->
 <script src="https://www.paypal.com/sdk/js?client-id=YOUR_LIVE_CLIENT_ID&currency=USD" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="script.js" defer></script>
@@ -35,7 +35,7 @@
   <h2>Collection Stats</h2>
   <div class="stats-row">
     <div class="stat-box">
-      <strong id="remaining">67,451</strong>
+      <strong id="remaining">67451</strong>
       <span>Remaining Codes</span>
     </div>
     <div class="stat-box">
@@ -47,8 +47,9 @@
 
 <section class="panel investment-info">
   <h2>Investment Opportunity</h2>
-  <p>Each of the 111,111 codes is one-of-one. Every purchase increases the value of the remaining codes. This is a finite digital asset — once sold, it can never be purchased again. Codes are delivered via our WONEUVWONE Instagram account to confirm authenticity. Investing now ensures a rare piece of this collection.</p>
-  <p>This is the best investment ever because the price will never decline even if people stop buying because some are already bought. Each WONEUVWONE coin is handmade of virgin wood. Every coin is unique with different creases and edges. Each coin comes with a code stamp. When all coins are purchased, the price will keep rising daily until infinity. Verification is available via code lookup.</p>
+  <p>Each of the 111,111 codes is one-of-one. Every purchase increases the value of the remaining codes. This is a finite digital asset — once sold, it can never be purchased again.</p>
+  <p>This is the best investment ever because the price will never decline even if people stop buying. Each WONEUVWONE coin is handmade of virgin wood. Every coin is unique with different creases and edges, and comes with a code stamp.</p>
+  <p>When buying or selling, DM your code to our <strong>WONEUVWONE Instagram account</strong>. We will send you detailed photos of that exact coin linked to your code. You can compare and verify authenticity visually. Verification is also available via the code lookup section below.</p>
 </section>
 
 <section class="panel purchase">
@@ -58,24 +59,26 @@
     <input name="email" type="email" placeholder="Email for confirmation" required>
     <input name="address" placeholder="Shipping Address (for code delivery)" required>
     <input name="instagram" placeholder="Instagram handle (optional)">
-    <textarea name="note" placeholder="Optional note"></textarea>
+    <textarea name="note" placeholder="Optional note" rows="3"></textarea>
 
     <!-- FormSubmit hidden fields -->
     <input type="hidden" name="_subject" value="New WONEUVWONE Order">
     <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
     <input type="hidden" name="_captcha" value="true">
     <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="price" id="hiddenPrice" value="14272.58">
 
-    <!-- Discount -->
+    <!-- Discount Section -->
     <div class="discount-section">
       <input id="discountCode" placeholder="Enter Discount Code (optional)">
       <button type="button" id="applyDiscountBtn">Apply Discount</button>
       <p id="priceDisplay">Price: $14,272.58</p>
     </div>
 
-    <input type="hidden" name="price" id="hiddenPrice" value="14272.58">
-
+    <!-- PayPal Button -->
     <div id="paypal-button-container"></div>
+
+    <!-- Fallback submit button -->
     <button type="submit" id="fallbackSubmit">Submit Order (Pay Later)</button>
   </form>
 </section>
@@ -91,7 +94,6 @@
   <input id="codeInput" placeholder="Enter your code">
   <button type="button" onclick="lookupCode()">Lookup</button>
   <div id="codeResult"></div>
-  <div id="photoGallery" class="proof-gallery" style="display:none"></div>
 </section>
 
 <footer>

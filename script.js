@@ -1,61 +1,114 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const remainingEl = document.getElementById('remaining');
-  const totalValueEl = document.getElementById('total-value');
-  const priceDisplay = document.getElementById('priceDisplay');
-  const hiddenPrice = document.getElementById('hiddenPrice');
+// ----------------------------
+// WONEUVWONE — Final Script.js
+// ----------------------------
 
-  let sold = 43660;
-  const totalSupply = 111111;
-  let remaining = totalSupply - sold;
-  let originalPrice = 14272.58;
-  let currentPrice = originalPrice;
-  let totalValue = sold * originalPrice;
+// Base price
+let originalPrice = 14272.58;
+let currentPrice = originalPrice;
 
-  remainingEl.textContent = remaining;
-  totalValueEl.textContent = `$${totalValue.toLocaleString()}`;
-  priceDisplay.textContent = `Price: $${originalPrice.toFixed(2)}`;
+// --- DISCOUNT CODES ---
+const discounts = {
+  "WONE90": 0.90, // 90% off
+  "8164ARY678": 0.95 // 95% off
+};
 
-  // Discount
-  document.getElementById('applyDiscountBtn').addEventListener('click', () => {
-    const code = (document.getElementById('discountCode').value || '').trim().toUpperCase();
-    if (code === '8164ARY678') {
-      currentPrice = originalPrice * 0.05; // 95% off
-      priceDisplay.textContent = `Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;
-    } else if (code === 'WONE90') {
-      currentPrice = originalPrice * 0.1;
-      priceDisplay.textContent = `Discount Applied ✅ Price: $${currentPrice.toFixed(2)}`;
+// --- APPLY DISCOUNT ---
+document.addEventListener("DOMContentLoaded", () => {
+  const discountInput = document.getElementById("discountCode");
+  const applyButton = document.getElementById("applyDiscountBtn");
+  const priceDisplay = document.getElementById("priceDisplay");
+  const hiddenPrice = document.getElementById("hiddenPrice");
+
+  applyButton.addEventListener("click", () => {
+    const enteredCode = discountInput.value.trim().toUpperCase();
+    if (discounts[enteredCode]) {
+      const discountPercent = discounts[enteredCode];
+      const discountedPrice = originalPrice * (1 - discountPercent);
+      currentPrice = discountedPrice.toFixed(2);
+      priceDisplay.textContent = `Price: $${currentPrice}`;
+      hiddenPrice.value = currentPrice;
+      alert(`Discount applied! You saved ${discountPercent * 100}%`);
     } else {
+      alert("Invalid code.");
       currentPrice = originalPrice;
-      priceDisplay.textContent = `Invalid Code ❌ Price: $${originalPrice.toFixed(2)}`;
+      priceDisplay.textContent = `Price: $${originalPrice.toFixed(2)}`;
+      hiddenPrice.value = originalPrice;
     }
-    hiddenPrice.value = currentPrice.toFixed(2);
-    renderPaypalButtons();
   });
 
-  // PayPal button
-  function renderPaypalButtons() {
-    const container = document.getElementById('paypal-button-container');
-    if (!container || !window.paypal) return;
-    container.innerHTML = '';
+  // Initialize PayPal
+  if (window.paypal) {
     paypal.Buttons({
-      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
-      createOrder: (data, actions) => actions.order.create({
-        purchase_units: [{ amount: { value: currentPrice.toFixed(2) }, description: "WONEUVWONE — One-of-one code" }]
-      }),
-      onApprove: (data, actions) => actions.order.capture().then(details => {
-        hiddenPrice.value = currentPrice.toFixed(2);
-        document.getElementById('orderForm').submit();
-        alert('Payment complete! Order info sent via email.');
-        remaining--;
-        totalValue += currentPrice;
-        remainingEl.textContent = remaining;
-        totalValueEl.textContent = `$${totalValue.toLocaleString()}`;
-      }),
-      onError: (err) => { console.error(err); alert('Payment error.'); }
+      style: {
+        color: "gold",
+        shape: "rect",
+        label: "pay",
+        layout: "vertical"
+      },
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: currentPrice.toString() }
+          }]
+        });
+      },
+      onApprove: (data, actions) => {
+        return actions.order.capture().then((details) => {
+          alert(`✅ Transaction completed by ${details.payer.name.given_name}!`);
+          document.getElementById("orderForm").submit();
+        });
+      }
     }).render('#paypal-button-container');
   }
-  renderPaypalButtons();
 
-  // Code lookup demo
-  window.lookupCode = function() {
-    const code = (document.getElementById('codeInput').value
+  // Draw graph
+  drawInvestmentChart();
+
+});
+
+// ----------------------------
+// GRAPH (2022–2025 Investment Growth)
+// ----------------------------
+function drawInvestmentChart() {
+  const ctx = document.getElementById("investmentChart").getContext("2d");
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["2022", "2023", "2024", "2025"],
+      datasets: [{
+        label: "Total Collection Value ($)",
+        data: [54000000, 250000000, 475000000, 623140843],
+        borderWidth: 3,
+        borderColor: "gold",
+        pointBackgroundColor: "white",
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: false }
+      }
+    }
+  });
+}
+
+// ----------------------------
+// CODE LOOKUP SYSTEM
+// ----------------------------
+function lookupCode() {
+  const input = document.getElementById("codeInput").value.trim();
+  const resultBox = document.getElementById("codeResult");
+  if (input === "") {
+    resultBox.textContent = "Please enter a code.";
+    return;
+  }
+
+  // Example fake database
+  const validCodes = ["WONE-0451", "WONE-0078", "WONE-2391", "WONE-1111"];
+  if (validCodes.includes(input.toUpperCase())) {
+    resultBox.innerHTML = `✅ Code ${input} verified. Authentic coin registered under WONEUVWONE.`;
+  } else {
+    resultBox.innerHTML = `⚠️ Code ${input} not found. Verify with official WONEUVWONE Instagram.`;
+  }
+}

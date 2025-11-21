@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WONEUVWONE</title>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_HERE&currency=USD"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  width: 90%;
+  max-width: 700px;
+  margin: 40px auto;
+  background: #050505;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #111;
+}
+
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 8px 0;
+  background: #0d0d0d;
+  border: 1px solid #222;
+  border-radius: 8px;
+  color: white;
+}
+
+button {
+  width: 90%;
+  padding: 14px;
+  background: #1a1a1a;
+  color: white;
+  border: 1px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #2a2a2a;
+}
+
+#confirmation {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  background: #0b0b0b;
+  border: 1px solid #222;
+  border-radius: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- GRAPH -->
+<section>
+  <h2>WONEUVWONE Total Sold (2022–2030)</h2>
+  <canvas id="growthChart"></canvas>
+</section>
+
+<script>
+const ctx = document.getElementById('growthChart');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['2022','2023','2024','2025','2026','2027','2028','2029','2030'],
+    datasets: [{
+      label: 'Total Amount Sold ($)',
+      data: [3910*81490, 9122*81490, 24916*81490, 51022*81490, null, null, null, null, null],
+      borderColor: '#fff',
+      backgroundColor: 'rgba(255,255,255,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointBackgroundColor: '#fff'
+    }]
+  },
+  options: {
+    scales: {
+      x: { ticks: { color: '#fff' } },
+      y: { ticks: { color: '#fff' } }
+    }
+  }
+});
+</script>
+
+<!-- BUY SECTION -->
+<section>
+  <h2>Buy WONEUVWONE Coin</h2>
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" value="1" min="1" step="1">
+  <p id="totalPrice">Total: $81,490</p>
+  <div id="paypal-button-container"></div>
+</section>
+
+<script>
+const pricePerCoin = 81490; 
+const quantityInput = document.getElementById("quantity");
+const totalPriceDisplay = document.getElementById("totalPrice");
+
+function updateTotal() {
+  const qty = parseInt(quantityInput.value) || 1;
+  totalPriceDisplay.innerText = "Total: $" + (qty * pricePerCoin).toLocaleString();
+}
+quantityInput.addEventListener("input", updateTotal);
+updateTotal();
+
+paypal.Buttons({
+  createOrder: function(data, actions) {
+    const qty = parseInt(quantityInput.value) || 1;
+    return actions.order.create({
+      purchase_units: [{
+        amount: { value: (qty * pricePerCoin).toFixed(2) },
+        description: qty + " WONEUVWONE Coin(s)"
+      }]
+    });
+  },
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+      document.getElementById('shippingFormSection').scrollIntoView({ behavior: "smooth" });
+      alert("Payment complete! Please enter your shipping information below.");
+    });
+  }
+}).render('#paypal-button-container');
+</script>
+
+<!-- SHIPPING FORM -->
+<section id="shippingFormSection">
+  <h2>Shipping Information</h2>
+  <form id="shippingForm" action="https://formsubmit.co/YOUR_EMAIL@DOMAIN.COM" method="POST">
+    <input type="text" name="fullName" placeholder="Full Name" required>
+    <input type="text" name="address" placeholder="Shipping Address" required>
+    <input type="text" name="emailOrPhone" placeholder="Email or Phone" required>
+
+    <!-- FormSubmit settings -->
+    <input type="hidden" name="_subject" value="New WONEUVWONE Purchase">
+    <input type="hidden" name="_autoresponse" value="CONGRATULATIONS! WONEUVWONE COIN will be received under 30 days.">
+    <input type="hidden" name="_next" value="">
+    <input type="hidden" name="_captcha" value="false">
+
+    <button type="submit">Submit Shipping Info</button>
+  </form>
+
+  <div id="confirmation">
+    <h3>CONGRATULATIONS</h3>
+    <p>WONEUVWONE COIN will be received under 30 days.</p>
+  </div>
+</section>
+
+<script>
+document.getElementById('shippingForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  this.submit(); // Send to FormSubmit
+  document.getElementById('confirmation').style.display = 'block';
+  this.scrollIntoView({ behavior: "smooth" });
+});
+</script>
+
+</body>
+</html>

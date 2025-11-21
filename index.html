@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WONEUVWONE — Handmade One-of-One Wood Pulp Art Coin by Uriel Escarcega</title>
+<meta name="description" content="WONEUVWONE — Handmade, one-of-one wood pulp art coins by Uriel Escarcega. Every coin is unique and impossible to replicate. Verify authenticity via Instagram. Purchase your WONEUVWONE coin now.">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "WONEUVWONE Handmade Coin",
+  "description": "Handmade, one-of-one wood pulp art coin by Uriel Escarcega. Each coin is unique and impossible to replicate. Verify authenticity via Instagram.",
+  "image": "https://yourdomain.com/coin.jpg",
+  "brand": "WONEUVWONE",
+  "creator": {
+    "@type": "Person",
+    "name": "Uriel Escarcega"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "81490",
+    "availability": "https://schema.org/InStock",
+    "url": "https://yourdomain.com"
+  }
+}
+</script>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AUvyphdEPA77Ia6dtuSv-DCRnuWsRP0L9wmxY-uqaPVGxNiKOuiBHJiLCTQcHttLoi7eskjNDhFruS7D&currency=USD"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body { background: #000; color: #fff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; }
+section { width: 90%; max-width: 800px; margin: 40px auto; background: #050505; padding: 30px; border-radius: 12px; border: 1px solid #111; }
+input { width: 90%; padding: 12px; margin: 8px 0; background: #0d0d0d; border: 1px solid #222; border-radius: 8px; color: white; font-size: 16px; }
+button { width: 90%; padding: 14px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+button:hover { background: #2a2a2a; }
+#confirmation { display: none; margin-top: 20px; padding: 20px; background: #0b0b0b; border: 1px solid #222; border-radius: 8px; }
+#orderSummary { margin: 15px 0; font-weight: bold; font-size: 18px; }
+canvas { background: #0b0b0b; border-radius: 12px; margin-top: 20px; }
+ol { text-align: left; margin-left: 20px; }
+</style>
+</head>
+<body>
+
+<!-- PRICE HISTORY GRAPH -->
+<section>
+  <h2>Price Growth of WONEUVWONE Coin</h2>
+  <canvas id="priceChart"></canvas>
+</section>
+
+<script>
+const ctx = document.getElementById('priceChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['2022', '2023', '2024', '2025'],
+        datasets: [{
+            label: 'Coin Price (USD)',
+            data: [1, 9122, 24916, 81490],
+            borderColor: '#9ee7e1',
+            backgroundColor: 'rgba(158,231,225,0.2)',
+            fill: true,
+            tension: 0.3
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Price (USD)' },
+                ticks: { color: '#fff' }
+            },
+            x: { ticks: { color: '#fff' } }
+        },
+        plugins: { legend: { labels: { color: '#fff' } } }
+    }
+});
+</script>
+
+<!-- STORE SECTION -->
+<section>
+  <h1>WONEUVWONE — Handmade One-of-One Art Coin</h1>
+  <p>Price per Coin: $81,490</p>
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" value="1" min="1" step="1">
+  <p id="orderSummary">Total: $81,490</p>
+  <div id="paypal-button-container"></div>
+</section>
+
+<script>
+const pricePerCoin = 81490;
+const quantityInput = document.getElementById("quantity");
+const orderSummary = document.getElementById("orderSummary");
+const paypalContainer = document.getElementById("paypal-button-container");
+
+function formatCurrency(num) { return "$" + num.toLocaleString(); }
+
+function renderPaypalButtons(totalAmount) {
+  paypalContainer.innerHTML = '';
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{ amount: { value: totalAmount.toFixed(2) }, description: quantityInput.value + " WONEUVWONE Coin(s)" }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        document.getElementById('shippingFormSection').scrollIntoView({ behavior: "smooth" });
+        alert("Payment complete! Please enter your shipping information below.");
+      });
+    }
+  }).render('#paypal-button-container');
+}
+
+function updateTotal() {
+  let qty = parseInt(quantityInput.value) || 1;
+  if (qty < 1) qty = 1;
+  quantityInput.value = qty;
+  const total = qty * pricePerCoin;
+  orderSummary.innerText = "Total: " + formatCurrency(total);
+  renderPaypalButtons(total);
+}
+
+quantityInput.addEventListener("input", updateTotal);
+updateTotal();
+</script>
+
+<!-- SHIPPING FORM -->
+<section id="shippingFormSection">
+  <h2>Shipping Information & Confirmation</h2>
+  <form id="shippingForm" action="https://formsubmit.co/YOUR_EMAIL@DOMAIN.COM" method="POST">
+    <input type="text" name="fullName" placeholder="Full Name" required>
+    <input type="text" name="address" placeholder="Shipping Address" required>
+    <input type="text" name="emailOrPhone" placeholder="Email or Phone" required>
+
+    <input type="hidden" name="_subject" value="New WONEUVWONE Purchase">
+    <input type="hidden" name="_autoresponse" value="CONGRATULATIONS! WONEUVWONE COIN will be received under 30 days.">
+    <input type="hidden" name="_next" value="">
+    <input type="hidden" name="_captcha" value="false">
+
+    <button type="submit">Submit Shipping Info</button>
+  </form>
+
+  <div id="confirmation">
+    <h3>CONGRATULATIONS</h3>
+    <p>WONEUVWONE COIN will be received under 30 days.</p>
+  </div>
+</section>
+
+<!-- ABOUT & VERIFICATION -->
+<section>
+  <h2>About This Exclusive Handmade Coin</h2>
+  <p>Each WONEUVWONE coin is handmade from wood pulp by <strong>Uriel Escarcega</strong>. Every coin is <strong>one-of-one</strong> and impossible to replicate. The wood pulp naturally forms different patterns every time, making each coin completely unique.</p>
+  <p>Authenticity is verified through our <strong>WONEUVWONE Instagram account</strong>. Direct message a picture of the coin and its unique code. We keep a record of every coin ever made and can <strong>100% confirm authenticity</strong>.</p>
+</section>
+
+<section>
+  <h2>Verify Your WONEUVWONE Coin</h2>
+  <p>To confirm a coin is authentic:</p>
+  <ol>
+    <li>Take a clear picture of your coin and the unique code that came with it.</li>
+    <li>Direct message the image and code to our <strong>WONEUVWONE Instagram account</strong>.</li>
+    <li>We will check our records and respond, confirming authenticity.</li>
+  </ol>
+</section>
+
+<script>
+document.getElementById('shippingForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  this.submit();
+  document.getElementById('confirmation').style.display = 'block';
+  this.scrollIntoView({ behavior: "smooth" });
+});
+</script>
+
+</body>
+</html>

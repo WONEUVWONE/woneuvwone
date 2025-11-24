@@ -13,27 +13,67 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-body { background: #000; color: #fff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; overflow-x: hidden; }
-section { width: 90%; max-width: 800px; margin: 5vw auto; background: #050505; padding: 5vw; border-radius: 12px; border: 1px solid #111; box-sizing: border-box; }
-input { width: 100%; padding: 3vw; margin: 2vw 0; background: #0d0d0d; border: 1px solid #222; border-radius: 8px; color: white; font-size: 4vw; text-align: center; box-sizing: border-box; }
-canvas { background: #0b0b0b; border-radius: 12px; margin-top: 5vw; max-height: 50vh; width: 100% !important; }
+body { 
+  background: #000; 
+  color: #fff; 
+  font-family: 'Arial', sans-serif; 
+  text-align: center; 
+  margin: 0; 
+  padding: 0; 
+  overflow-x: hidden; 
+}
+
+section { 
+  width: 90%; 
+  max-width: 800px; 
+  margin: 5vw auto; 
+  background: #0a0a0a; 
+  padding: 5vw; 
+  border-radius: 12px; 
+  border: 1px solid #222; 
+  box-sizing: border-box; 
+  box-shadow: 0 0 20px rgba(255,215,0,0.2);
+}
+
+input { 
+  width: 100%; 
+  padding: 3vw; 
+  margin: 2vw 0; 
+  background: #1a1a1a; 
+  border: 1px solid #333; 
+  border-radius: 8px; 
+  color: #fff; 
+  font-size: 4vw; 
+  text-align: center; 
+  box-sizing: border-box; 
+}
+
+canvas { 
+  background: #0b0b0b; 
+  border-radius: 12px; 
+  margin-top: 5vw; 
+  max-height: 50vh; 
+  width: 100% !important; 
+}
+
 p { font-size: 4vw; margin: 2vw 0; }
 #discountPrice { 
   font-size: 6vw; 
   font-weight: bold; 
-  color: #9ee7e1; 
+  color: #FFD700; /* Elegant gold */ 
   margin-top: 2vw; 
-  text-shadow: 0 0 10px #9ee7e1, 0 0 20px #9ee7e1, 0 0 30px #00ffff;
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFF8DC;
   display: inline-block;
   transition: transform 0.1s ease;
   position: relative;
 }
+
 .sparkle {
   position: absolute;
-  width: 1.5vw; height: 1.5vw;
+  width: 1.2vw; height: 1.2vw;
   border-radius: 50%;
-  background: red;
-  opacity: 0.8;
+  background: #FFF8DC; /* soft shimmer */
+  opacity: 0.9;
   pointer-events: none;
   animation: sparkleAnim 0.8s linear forwards;
 }
@@ -41,7 +81,9 @@ p { font-size: 4vw; margin: 2vw 0; }
   0% { transform: translate(0,0) scale(1); opacity: 1; }
   100% { transform: translate(var(--x,0px), var(--y,0px)) scale(0); opacity: 0; }
 }
-strong { color: #fff; }
+
+strong { color: #FFD700; }
+
 @media (min-width: 768px) {
   input { font-size: 1.2rem; padding: 0.8rem; }
   p { font-size: 1.2rem; }
@@ -71,23 +113,19 @@ const discountPrice = document.getElementById("discountPrice");
 let animationFrame;
 let confettiFired = false;
 
-// Rainbow colors for sparkles
-const colors = ['#FF3C00','#FFCD00','#00FF99','#00D0FF','#9B00FF','#FF0099'];
-
-// Sparkle effect
+// Elegant sparkles (soft gold/white)
 function createSparkle() {
   const sparkle = document.createElement('div');
   sparkle.className = 'sparkle';
-  const x = (Math.random() - 0.5) * 20;
-  const y = (Math.random() - 0.5) * 15;
+  const x = (Math.random() - 0.5) * 15;
+  const y = (Math.random() - 0.5) * 10;
   sparkle.style.setProperty('--x', x + 'vw');
   sparkle.style.setProperty('--y', y + 'vw');
-  sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
   discountPrice.appendChild(sparkle);
   setTimeout(() => sparkle.remove(), 800);
 }
 
-// Animate price countdown with rainbow sparkles, shake, pulse
+// Animate price countdown with subtle shake, pulse, sparkles
 function animatePrice(start, end, duration = 1200) {
   cancelAnimationFrame(animationFrame);
   const startTime = performance.now();
@@ -98,11 +136,11 @@ function animatePrice(start, end, duration = 1200) {
     const currentPrice = Math.floor(start + (end - start) * progress);
     discountPrice.innerHTML = "Discount applied: $" + currentPrice.toLocaleString();
 
-    const shake = Math.sin(progress * Math.PI * 10) * 1;
-    const scale = 1 + 0.05 * Math.sin(progress * Math.PI * 4);
+    const shake = Math.sin(progress * Math.PI * 10) * 0.5; // subtle
+    const scale = 1 + 0.03 * Math.sin(progress * Math.PI * 4);
     discountPrice.style.transform = `translateX(${shake}vw) scale(${scale})`;
 
-    if (Math.random() < 0.4) createSparkle();
+    if (Math.random() < 0.25) createSparkle();
 
     if (progress < 1) {
       animationFrame = requestAnimationFrame(step);
@@ -118,11 +156,11 @@ function animatePrice(start, end, duration = 1200) {
   animationFrame = requestAnimationFrame(step);
 }
 
-// Rainbow confetti
+// Elegant confetti: gold & white only
 function fireConfetti() {
   const duration = 2 * 1000;
   const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+  const defaults = { startVelocity: 25, spread: 180, ticks: 60, zIndex: 1000, colors: ['#FFD700','#FFF8DC','#FFFACD'] };
 
   const interval = setInterval(function() {
     const timeLeft = animationEnd - Date.now();
@@ -130,8 +168,7 @@ function fireConfetti() {
     const particleCount = 5 + Math.floor(timeLeft / duration * 50);
     confetti(Object.assign({}, defaults, { 
       particleCount, 
-      origin: { x: Math.random(), y: Math.random() - 0.2 },
-      colors: colors
+      origin: { x: Math.random(), y: Math.random() - 0.2 }
     }));
   }, 250);
 }
@@ -162,8 +199,8 @@ new Chart(ctx, {
         datasets: [{
             label: 'Coin Price (USD)',
             data: [1, 9122, 24916, 81490],
-            borderColor: '#9ee7e1',
-            backgroundColor: 'rgba(158,231,225,0.2)',
+            borderColor: '#FFD700',
+            backgroundColor: 'rgba(255,215,0,0.15)',
             fill: true,
             tension: 0.3
         }]

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WONEUVWONE Coin Price</title>
+<meta name="description" content="WONEUVWONE — Handmade, one-of-one wood pulp art coins by Uriel Escarcega.">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Canvas Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body { background: #000; color: #fff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; overflow-x: hidden; }
+section { width: 90%; max-width: 800px; margin: 40px auto; background: #050505; padding: 30px; border-radius: 12px; border: 1px solid #111; }
+input { width: 90%; padding: 12px; margin: 8px 0; background: #0d0d0d; border: 1px solid #222; border-radius: 8px; color: white; font-size: 16px; text-align: center; }
+canvas { background: #0b0b0b; border-radius: 12px; margin-top: 20px; }
+p { font-size: 18px; margin: 10px 0; }
+#discountPrice { 
+  font-size: 46px; 
+  font-weight: bold; 
+  color: #9ee7e1; 
+  margin-top: 10px; 
+  text-shadow: 0 0 10px #9ee7e1, 0 0 20px #9ee7e1, 0 0 30px #00ffff;
+  display: inline-block;
+  transition: transform 0.1s ease;
+  position: relative;
+}
+.sparkle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: sparkleAnim 0.8s linear forwards;
+}
+@keyframes sparkleAnim {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x,0px), var(--y,0px)) scale(0); opacity: 0; }
+}
+strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- PRICE HISTORY GRAPH -->
+<section>
+  <h2>Price Growth of WONEUVWONE Coin</h2>
+  <canvas id="priceChart"></canvas>
+</section>
+
+<!-- PRICE AND DISCOUNT -->
+<section>
+  <h1>WONEUVWONE Coin</h1>
+  <p>Price per Coin: <strong>$81,490</strong></p>
+  
+  <input type="text" id="discountCode" placeholder="Discount Code">
+  <div id="discountPrice"></div>
+</section>
+
+<script>
+const pricePerCoin = 81490;
+const discountInput = document.getElementById("discountCode");
+const discountPrice = document.getElementById("discountPrice");
+let animationFrame;
+let confettiFired = false;
+
+// Sparkle effect
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  const x = (Math.random() - 0.5) * 80; // spread
+  const y = (Math.random() - 0.5) * 50;
+  sparkle.style.setProperty('--x', x + 'px');
+  sparkle.style.setProperty('--y', y + 'px');
+  discountPrice.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 800);
+}
+
+// Animate price count-down with glow, shake, sparkles
+function animatePrice(start, end, duration = 1200) {
+  cancelAnimationFrame(animationFrame);
+  const startTime = performance.now();
+
+  function step(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const currentPrice = Math.floor(start + (end - start) * progress);
+    discountPrice.innerHTML = "Discount applied: $" + currentPrice.toLocaleString();
+
+    // Shake and pulse
+    const shake = Math.sin(progress * Math.PI * 10) * 2;
+    const scale = 1 + 0.05 * Math.sin(progress * Math.PI * 4);
+    discountPrice.style.transform = `translateX(${shake}px) scale(${scale})`;
+
+    // Create sparkles continuously
+    if (Math.random() < 0.3) createSparkle();
+
+    if (progress < 1) {
+      animationFrame = requestAnimationFrame(step);
+    } else {
+      discountPrice.style.transform = 'scale(1)';
+      if (!confettiFired) {
+        fireConfetti();
+        confettiFired = true;
+      }
+    }
+  }
+
+  animationFrame = requestAnimationFrame(step);
+}
+
+// Confetti function
+function fireConfetti() {
+  const duration = 2 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) return clearInterval(interval);
+    const particleCount = 5 + Math.floor(timeLeft / duration * 50);
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+  }, 250);
+}
+
+function updateDiscountDisplay() {
+  const code = discountInput.value.toUpperCase();
+  const finalPrice = code === "PVCIU6105GOTCQQ32" ? pricePerCoin * 0.04 : pricePerCoin;
+  
+  if (finalPrice !== pricePerCoin) {
+    animatePrice(pricePerCoin, finalPrice, 1200);
+    if (code !== "PVCIU6105GOTCQQ32") confettiFired = false;
+  } else {
+    discountPrice.innerHTML = "";
+    discountPrice.style.transform = 'scale(1)';
+    confettiFired = false;
+  }
+}
+
+discountInput.addEventListener("input", updateDiscountDisplay);
+updateDiscountDisplay();
+
+// Chart.js
+const ctx = document.getElementById('priceChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['2022', '2023', '2024', '2025'],
+        datasets: [{
+            label: 'Coin Price (USD)',
+            data: [1, 9122, 24916, 81490],
+            borderColor: '#9ee7e1',
+            backgroundColor: 'rgba(158,231,225,0.2)',
+            fill: true,
+            tension: 0.3
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Price (USD)' }, ticks: { color: '#fff' } },
+            x: { ticks: { color: '#fff' } }
+        },
+        plugins: { legend: { labels: { color: '#fff' } } }
+    }
+});
+</script>
+
+</body>
+</html>

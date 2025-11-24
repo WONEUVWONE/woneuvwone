@@ -2,87 +2,88 @@
     background:#000;
     color:#fff;
     width:100%;
-    padding:60px 20px;
-    box-sizing:border-box;
-    font-family:'Helvetica Neue', sans-serif;
+    min-height:100vh;
     display:flex;
     justify-content:center;
+    align-items:center;
+    font-family:'Helvetica Neue', sans-serif;
+    padding:0 20px;
+    box-sizing:border-box;
 ">
     <div style="
+        max-width:900px;
         width:100%;
-        max-width:650px;
         text-align:center;
     ">
 
-        <!-- TITLE -->
+        <!-- MASSIVE TITLE -->
         <h1 style="
-            font-size:34px;
-            font-weight:300;
-            letter-spacing:2px;
-            margin-bottom:5px;
+            font-size:96px;
+            font-weight:700;
+            letter-spacing:6px;
+            margin-bottom:15px;
+            text-transform:uppercase;
         ">
             WONEUVWONE
         </h1>
 
         <!-- SUBTITLE -->
         <div style="
-            font-size:16px;
-            opacity:0.7;
-            margin-bottom:40px;
-            letter-spacing:1px;
+            font-size:32px;
+            opacity:0.6;
+            margin-bottom:60px;
+            letter-spacing:3px;
         ">
             (one of one)
         </div>
 
-        <!-- TEXT -->
-        <p style="font-size:17px; opacity:0.9; line-height:1.7; margin-bottom:20px;">
-            Handcrafted from pure wood pulp, each WONEUVWONE coin is individually created by 
-            <span style="opacity:1;">Uriel Escarcega</span>.
+        <!-- STORY -->
+        <p style="font-size:28px; line-height:1.8; opacity:0.9; margin-bottom:40px;">
+            Handcrafted from pure wood pulp, each WONEUVWONE coin is individually created by <span style="opacity:1;">Uriel Escarcega</span>.
         </p>
 
-        <p style="font-size:17px; opacity:0.9; line-height:1.7; margin-bottom:20px;">
-            No two coins are ever alike. Natural wood pulp formations create unique patterns,
-            ridges, and contours that cannot be replicated. Every coin is truly one-of-one.
+        <p style="font-size:28px; line-height:1.8; opacity:0.9; margin-bottom:40px;">
+            No two coins are ever alike. Natural wood pulp formations create unique patterns, ridges, and contours that cannot be replicated. Every coin is truly one-of-one.
         </p>
 
-        <p style="font-size:17px; opacity:0.9; line-height:1.7; margin-bottom:35px;">
-            To authenticate a coin before buying or selling, send a photo and the verification code
-            to the official WONEUVWONE Instagram. Every coin is archived for 100% verification.
+        <p style="font-size:28px; line-height:1.8; opacity:0.9; margin-bottom:60px;">
+            To authenticate a coin before buying or selling, send a photo and verification code to the official WONEUVWONE Instagram. Every coin is archived for 100% verification.
         </p>
 
         <!-- EMPTY DISCOUNT BOX -->
         <input 
-        id="discountCode"
-        type="text"
-        placeholder=""
-        oninput="updatePrice()"
-        style="
-            width:100%;
-            padding:15px;
-            background:#0b0b0b;
-            border:1px solid rgba(255,255,255,0.15);
-            border-radius:8px;
-            color:#fff;
-            font-size:16px;
-            letter-spacing:1px;
-            text-align:center;
-            margin-bottom:30px;
-        ">
+            id="discountCode"
+            type="text"
+            placeholder=""
+            oninput="updatePrice()"
+            style="
+                width:100%;
+                padding:25px;
+                font-size:28px;
+                background:#000;
+                border:2px solid rgba(255,255,255,0.12);
+                border-radius:12px;
+                color:#fff;
+                text-align:center;
+                margin-bottom:60px;
+                letter-spacing:2px;
+            "
+        >
 
         <!-- ORIGINAL PRICE -->
         <div style="
-            font-size:22px;
-            font-weight:300;
-            opacity:0.75;
+            font-size:36px;
+            font-weight:400;
+            opacity:0.6;
+            margin-bottom:15px;
         ">
             1 Bitcoin
         </div>
 
         <!-- FINAL PRICE -->
         <div id="finalPrice" style="
-            font-size:34px;
-            font-weight:500;
-            margin-top:8px;
+            font-size:72px;
+            font-weight:700;
         ">
             1 BTC
         </div>

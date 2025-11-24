@@ -3,217 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WONEUVWONE Coin Price</title>
-<meta name="description" content="WONEUVWONE — Handmade, one-of-one wood pulp art coins by Uriel Escarcega.">
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Canvas Confetti -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<title>WONEUVWONE Handmade Coin</title>
 
 <style>
-body { 
-  background: #000; 
-  color: #fff; 
-  font-family: 'Arial', sans-serif; 
-  text-align: center; 
-  margin: 0; 
-  padding: 0; 
-  overflow-x: hidden; 
+body {
+  background: #000;
+  color: #fff;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
 }
 
-section { 
-  width: 90%; 
-  max-width: 800px; 
-  margin: 5vw auto; 
-  background: #0a0a0a; 
-  padding: 5vw; 
-  border-radius: 12px; 
-  border: 1px solid #222; 
-  box-sizing: border-box; 
-  box-shadow: 0 0 20px rgba(255,215,0,0.2);
+section {
+  width: 90%;
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 14px;
+  box-shadow: 0 0 35px rgba(255, 215, 0, 0.08);
 }
 
-input { 
-  width: 100%; 
-  padding: 3vw; 
-  margin: 2vw 0; 
-  background: #1a1a1a; 
-  border: 1px solid #333; 
-  border-radius: 8px; 
-  color: #fff; 
-  font-size: 4vw; 
-  text-align: center; 
-  box-sizing: border-box; 
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
-canvas { 
-  background: #0b0b0b; 
-  border-radius: 12px; 
-  margin-top: 5vw; 
-  max-height: 50vh; 
-  width: 100% !important; 
+p, .description {
+  font-size: 18px;
+  color: #e5e5e5;
+  margin-top: 18px;
 }
 
-p { font-size: 4vw; margin: 2vw 0; }
-#discountPrice { 
-  font-size: 6vw; 
-  font-weight: bold; 
-  color: #FFD700; /* Elegant gold */ 
-  margin-top: 2vw; 
-  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFF8DC;
-  display: inline-block;
-  transition: transform 0.1s ease;
-  position: relative;
+strong {
+  color: #FFD700;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
-.sparkle {
-  position: absolute;
-  width: 1.2vw; height: 1.2vw;
-  border-radius: 50%;
-  background: #FFF8DC; /* soft shimmer */
-  opacity: 0.9;
-  pointer-events: none;
-  animation: sparkleAnim 0.8s linear forwards;
-}
-@keyframes sparkleAnim {
-  0% { transform: translate(0,0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--x,0px), var(--y,0px)) scale(0); opacity: 0; }
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: white;
+  font-size: 17px;
+  text-align: center;
 }
 
-strong { color: #FFD700; }
+#discountPrice {
+  margin-top: 20px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #FFD700;
+  display: none;
+}
 
-@media (min-width: 768px) {
-  input { font-size: 1.2rem; padding: 0.8rem; }
-  p { font-size: 1.2rem; }
-  #discountPrice { font-size: 2rem; }
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  p, .description { font-size: 16px; }
+  #discountPrice { font-size: 22px; }
 }
 </style>
 </head>
 <body>
 
 <section>
-  <h2>Price Growth of WONEUVWONE Coin</h2>
-  <canvas id="priceChart"></canvas>
-</section>
 
-<section>
-  <h1>WONEUVWONE Coin</h1>
-  <p>Price per Coin: <strong>1 btc</strong></p>
-  
+  <h1>WONEUVWONE Handmade Coin</h1>
+
+  <p>Price per Coin: <strong>1 Bitcoin</strong></p>
+
   <input type="text" id="discountCode" placeholder="Discount Code">
   <div id="discountPrice"></div>
+
+  <div class="description">
+    <p>It’s a handmade coin made of wood pulp. Uriel Escarcega makes each single coin. Every single coin that’s made is one of one and is impossible to replicate. When the wood pulp is formed into a coin, every single time it comes in different patterns.</p>
+
+    <p>When you want to sell or buy from someone and you want to confirm it’s real and verify it, it’s done in the WONEUVWONE Instagram account. You direct message it, sending a picture of the coin and the code that came with the coin, and we tell you if it’s real or not.</p>
+
+    <p>WONEUVWONE has every single coin saved, so when you send us the code and the picture of the coin, we can 100% make sure it’s real.</p>
+
+    <p>It’s impossible to replicate because each time a WONEUVWONE coin is formed, all around it has infinite forms, ridges, and creases that never, ever replicate.</p>
+
+    <p>Each WONEUVWONE coin costs 1 Bitcoin.</p>
+  </div>
+
 </section>
 
 <script>
-const pricePerCoin = 1 ;
-const discountInput = document.getElementById("discountCode");
-const discountPrice = document.getElementById("discountPrice");
-let animationFrame;
-let confettiFired = false;
+// SIMPLE: Only shows discount number if code matches.
+const input = document.getElementById("discountCode");
+const display = document.getElementById("discountPrice");
 
-// Elegant sparkles (soft gold/white)
-function createSparkle() {
-  const sparkle = document.createElement('div');
-  sparkle.className = 'sparkle';
-  const x = (Math.random() - 0.5) * 15;
-  const y = (Math.random() - 0.5) * 10;
-  sparkle.style.setProperty('--x', x + 'vw');
-  sparkle.style.setProperty('--y', y + 'vw');
-  discountPrice.appendChild(sparkle);
-  setTimeout(() => sparkle.remove(), 800);
-}
+input.addEventListener("input", () => {
+  const code = input.value.trim().toUpperCase();
 
-// Animate price countdown with subtle shake, pulse, sparkles
-function animatePrice(start, end, duration = 1200) {
-  cancelAnimationFrame(animationFrame);
-  const startTime = performance.now();
-
-  function step(currentTime) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const currentPrice = Math.floor(start + (end - start) * progress);
-    discountPrice.innerHTML = "Discount applied: $" + currentPrice.toLocaleString();
-
-    const shake = Math.sin(progress * Math.PI * 10) * 0.5; // subtle
-    const scale = 1 + 0.03 * Math.sin(progress * Math.PI * 4);
-    discountPrice.style.transform = `translateX(${shake}vw) scale(${scale})`;
-
-    if (Math.random() < 0.25) createSparkle();
-
-    if (progress < 1) {
-      animationFrame = requestAnimationFrame(step);
-    } else {
-      discountPrice.style.transform = 'scale(1)';
-      if (!confettiFired) {
-        fireConfetti();
-        confettiFired = true;
-      }
-    }
-  }
-
-  animationFrame = requestAnimationFrame(step);
-}
-
-// Elegant confetti: gold & white only
-function fireConfetti() {
-  const duration = 2 * 1000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 25, spread: 180, ticks: 60, zIndex: 1000, colors: ['#FFD700','#FFF8DC','#FFFACD'] };
-
-  const interval = setInterval(function() {
-    const timeLeft = animationEnd - Date.now();
-    if (timeLeft <= 0) return clearInterval(interval);
-    const particleCount = 5 + Math.floor(timeLeft / duration * 50);
-    confetti(Object.assign({}, defaults, { 
-      particleCount, 
-      origin: { x: Math.random(), y: Math.random() - 0.2 }
-    }));
-  }, 250);
-}
-
-function updateDiscountDisplay() {
-  const code = discountInput.value.toUpperCase();
-  const finalPrice = code === "PVCIU6105GOTCQQ32" ? pricePerCoin * 0.04 : pricePerCoin;
-  
-  if (finalPrice !== pricePerCoin) {
-    animatePrice(pricePerCoin, finalPrice, 1200);
-    if (code !== "PVCIU6105GOTCQQ32") confettiFired = false;
+  if (code === "PVCIU6105GOTCQQ32") {
+    display.style.display = "block";
+    display.innerText = "Discount Applied: 0.04 Bitcoin";
   } else {
-    discountPrice.innerHTML = "";
-    discountPrice.style.transform = 'scale(1)';
-    confettiFired = false;
+    display.style.display = "none";
   }
-}
-
-discountInput.addEventListener("input", updateDiscountDisplay);
-updateDiscountDisplay();
-
-// Chart.js
-const ctx = document.getElementById('priceChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['2022', '2023', '2024', '2025'],
-        datasets: [{
-            label: 'Coin Price (USD)',
-            data: [1, 9122, 24916, 81490],
-            borderColor: '#FFD700',
-            backgroundColor: 'rgba(255,215,0,0.15)',
-            fill: true,
-            tension: 0.3
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: { beginAtZero: true, title: { display: true, text: 'Price (USD)' }, ticks: { color: '#fff' } },
-            x: { ticks: { color: '#fff' } }
-        },
-        plugins: { legend: { labels: { color: '#fff' } } }
-    }
 });
 </script>
 

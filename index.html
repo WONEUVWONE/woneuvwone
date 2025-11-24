@@ -1,35 +1,56 @@
 <section style="
     background:#000;
     color:#fff;
-    padding:60px 25px;
+    width:100%;
+    padding:60px 20px;
+    box-sizing:border-box;
     font-family:'Helvetica Neue', sans-serif;
-    max-width:700px;
-    margin:auto;
-    line-height:1.7;
+    display:flex;
+    justify-content:center;
 ">
-
     <div style="
-        border:1px solid rgba(255,255,255,0.12);
-        padding:40px 35px;
-        border-radius:14px;
-        background:rgba(255,255,255,0.02);
-        backdrop-filter:blur(4px);
+        width:100%;
+        max-width:650px;
+        text-align:center;
     ">
 
-        <p style="font-size:17px; opacity:0.9; margin-bottom:20px;">
+        <!-- TITLE -->
+        <h1 style="
+            font-size:34px;
+            font-weight:300;
+            letter-spacing:2px;
+            margin-bottom:5px;
+        ">
+            WONEUVWONE
+        </h1>
+
+        <!-- SUBTITLE -->
+        <div style="
+            font-size:16px;
+            opacity:0.7;
+            margin-bottom:40px;
+            letter-spacing:1px;
+        ">
+            (one of one)
+        </div>
+
+        <!-- TEXT -->
+        <p style="font-size:17px; opacity:0.9; line-height:1.7; margin-bottom:20px;">
             Handcrafted from pure wood pulp, each WONEUVWONE coin is individually created by 
             <span style="opacity:1;">Uriel Escarcega</span>.
         </p>
 
-        <p style="font-size:17px; opacity:0.9; margin-bottom:20px;">
-            No two coins are ever alike. Natural wood pulp formations create unique patterns, ridges, and contours that cannot be replicated. Every coin is a true one-of-one.
+        <p style="font-size:17px; opacity:0.9; line-height:1.7; margin-bottom:20px;">
+            No two coins are ever alike. Natural wood pulp formations create unique patterns,
+            ridges, and contours that cannot be replicated. Every coin is truly one-of-one.
         </p>
 
-        <p style="font-size:17px; opacity:0.9; margin-bottom:25px;">
-            To authenticate a coin before buying or selling, send a photo and verification code to the official WONEUVWONE Instagram account. Every coin is archived for 100% verification.
+        <p style="font-size:17px; opacity:0.9; line-height:1.7; margin-bottom:35px;">
+            To authenticate a coin before buying or selling, send a photo and the verification code
+            to the official WONEUVWONE Instagram. Every coin is archived for 100% verification.
         </p>
 
-        <!-- EMPTY DISCOUNT INPUT (MINIMAL + ELEGANT) -->
+        <!-- EMPTY DISCOUNT BOX -->
         <input 
         id="discountCode"
         type="text"
@@ -37,34 +58,31 @@
         oninput="updatePrice()"
         style="
             width:100%;
-            padding:14px;
+            padding:15px;
             background:#0b0b0b;
             border:1px solid rgba(255,255,255,0.15);
             border-radius:8px;
             color:#fff;
             font-size:16px;
-            text-align:center;
             letter-spacing:1px;
+            text-align:center;
             margin-bottom:30px;
         ">
 
         <!-- ORIGINAL PRICE -->
         <div style="
-            text-align:center;
-            font-size:24px;
+            font-size:22px;
             font-weight:300;
-            margin-bottom:8px;
             opacity:0.75;
         ">
             1 Bitcoin
         </div>
 
-        <!-- DISCOUNTED PRICE -->
+        <!-- FINAL PRICE -->
         <div id="finalPrice" style="
-            text-align:center;
-            font-size:32px;
+            font-size:34px;
             font-weight:500;
-            padding-top:12px;
+            margin-top:8px;
         ">
             1 BTC
         </div>
@@ -75,10 +93,10 @@
 <script>
 function updatePrice() {
     const code = document.getElementById("discountCode").value.trim();
-    let price = 1; // BTC
+    let price = 1;
 
     if (code === "PVCIU6105GOTCQQ32") {
-        price = 0.04; // 96% off
+        price = 0.04;
     }
 
     document.getElementById("finalPrice").innerText = price + " BTC";

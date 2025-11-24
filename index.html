@@ -14,15 +14,15 @@
 
 <style>
 body { background: #000; color: #fff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; overflow-x: hidden; }
-section { width: 90%; max-width: 800px; margin: 40px auto; background: #050505; padding: 30px; border-radius: 12px; border: 1px solid #111; }
-input { width: 90%; padding: 12px; margin: 8px 0; background: #0d0d0d; border: 1px solid #222; border-radius: 8px; color: white; font-size: 16px; text-align: center; }
-canvas { background: #0b0b0b; border-radius: 12px; margin-top: 20px; }
-p { font-size: 18px; margin: 10px 0; }
+section { width: 90%; max-width: 800px; margin: 5vw auto; background: #050505; padding: 5vw; border-radius: 12px; border: 1px solid #111; box-sizing: border-box; }
+input { width: 100%; padding: 3vw; margin: 2vw 0; background: #0d0d0d; border: 1px solid #222; border-radius: 8px; color: white; font-size: 4vw; text-align: center; box-sizing: border-box; }
+canvas { background: #0b0b0b; border-radius: 12px; margin-top: 5vw; max-height: 50vh; width: 100% !important; }
+p { font-size: 4vw; margin: 2vw 0; }
 #discountPrice { 
-  font-size: 46px; 
+  font-size: 6vw; 
   font-weight: bold; 
   color: #9ee7e1; 
-  margin-top: 10px; 
+  margin-top: 2vw; 
   text-shadow: 0 0 10px #9ee7e1, 0 0 20px #9ee7e1, 0 0 30px #00ffff;
   display: inline-block;
   transition: transform 0.1s ease;
@@ -30,9 +30,9 @@ p { font-size: 18px; margin: 10px 0; }
 }
 .sparkle {
   position: absolute;
-  width: 6px; height: 6px;
+  width: 1.5vw; height: 1.5vw;
   border-radius: 50%;
-  background: #fff;
+  background: red;
   opacity: 0.8;
   pointer-events: none;
   animation: sparkleAnim 0.8s linear forwards;
@@ -42,17 +42,20 @@ p { font-size: 18px; margin: 10px 0; }
   100% { transform: translate(var(--x,0px), var(--y,0px)) scale(0); opacity: 0; }
 }
 strong { color: #fff; }
+@media (min-width: 768px) {
+  input { font-size: 1.2rem; padding: 0.8rem; }
+  p { font-size: 1.2rem; }
+  #discountPrice { font-size: 2rem; }
+}
 </style>
 </head>
 <body>
 
-<!-- PRICE HISTORY GRAPH -->
 <section>
   <h2>Price Growth of WONEUVWONE Coin</h2>
   <canvas id="priceChart"></canvas>
 </section>
 
-<!-- PRICE AND DISCOUNT -->
 <section>
   <h1>WONEUVWONE Coin</h1>
   <p>Price per Coin: <strong>$81,490</strong></p>
@@ -68,19 +71,23 @@ const discountPrice = document.getElementById("discountPrice");
 let animationFrame;
 let confettiFired = false;
 
+// Rainbow colors for sparkles
+const colors = ['#FF3C00','#FFCD00','#00FF99','#00D0FF','#9B00FF','#FF0099'];
+
 // Sparkle effect
 function createSparkle() {
   const sparkle = document.createElement('div');
   sparkle.className = 'sparkle';
-  const x = (Math.random() - 0.5) * 80; // spread
-  const y = (Math.random() - 0.5) * 50;
-  sparkle.style.setProperty('--x', x + 'px');
-  sparkle.style.setProperty('--y', y + 'px');
+  const x = (Math.random() - 0.5) * 20;
+  const y = (Math.random() - 0.5) * 15;
+  sparkle.style.setProperty('--x', x + 'vw');
+  sparkle.style.setProperty('--y', y + 'vw');
+  sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
   discountPrice.appendChild(sparkle);
   setTimeout(() => sparkle.remove(), 800);
 }
 
-// Animate price count-down with glow, shake, sparkles
+// Animate price countdown with rainbow sparkles, shake, pulse
 function animatePrice(start, end, duration = 1200) {
   cancelAnimationFrame(animationFrame);
   const startTime = performance.now();
@@ -91,13 +98,11 @@ function animatePrice(start, end, duration = 1200) {
     const currentPrice = Math.floor(start + (end - start) * progress);
     discountPrice.innerHTML = "Discount applied: $" + currentPrice.toLocaleString();
 
-    // Shake and pulse
-    const shake = Math.sin(progress * Math.PI * 10) * 2;
+    const shake = Math.sin(progress * Math.PI * 10) * 1;
     const scale = 1 + 0.05 * Math.sin(progress * Math.PI * 4);
-    discountPrice.style.transform = `translateX(${shake}px) scale(${scale})`;
+    discountPrice.style.transform = `translateX(${shake}vw) scale(${scale})`;
 
-    // Create sparkles continuously
-    if (Math.random() < 0.3) createSparkle();
+    if (Math.random() < 0.4) createSparkle();
 
     if (progress < 1) {
       animationFrame = requestAnimationFrame(step);
@@ -113,21 +118,21 @@ function animatePrice(start, end, duration = 1200) {
   animationFrame = requestAnimationFrame(step);
 }
 
-// Confetti function
+// Rainbow confetti
 function fireConfetti() {
   const duration = 2 * 1000;
   const animationEnd = Date.now() + duration;
   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
 
-  function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
   const interval = setInterval(function() {
     const timeLeft = animationEnd - Date.now();
     if (timeLeft <= 0) return clearInterval(interval);
     const particleCount = 5 + Math.floor(timeLeft / duration * 50);
-    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+    confetti(Object.assign({}, defaults, { 
+      particleCount, 
+      origin: { x: Math.random(), y: Math.random() - 0.2 },
+      colors: colors
+    }));
   }, 250);
 }
 
@@ -165,6 +170,7 @@ new Chart(ctx, {
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             y: { beginAtZero: true, title: { display: true, text: 'Price (USD)' }, ticks: { color: '#fff' } },
             x: { ticks: { color: '#fff' } }

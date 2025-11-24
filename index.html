@@ -1,118 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WONEUVWONE Handmade Coin</title>
+<section style="
+    background:#000;
+    color:#fff;
+    padding:60px 25px;
+    font-family:'Helvetica Neue', sans-serif;
+    max-width:700px;
+    margin:auto;
+    line-height:1.7;
+">
 
-<style>
-body {
-  background: #000;
-  color: #fff;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-}
+    <div style="
+        border:1px solid rgba(255,255,255,0.12);
+        padding:40px 35px;
+        border-radius:14px;
+        background:rgba(255,255,255,0.02);
+        backdrop-filter:blur(4px);
+    ">
 
-section {
-  width: 90%;
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 40px;
-  background: #0a0a0a;
-  border: 1px solid #1a1a1a;
-  border-radius: 14px;
-  box-shadow: 0 0 35px rgba(255, 215, 0, 0.08);
-}
+        <p style="font-size:17px; opacity:0.9; margin-bottom:20px;">
+            Handcrafted from pure wood pulp, each WONEUVWONE coin is individually created by 
+            <span style="opacity:1;">Uriel Escarcega</span>.
+        </p>
 
-h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
+        <p style="font-size:17px; opacity:0.9; margin-bottom:20px;">
+            No two coins are ever alike. Natural wood pulp formations create unique patterns, ridges, and contours that cannot be replicated. Every coin is a true one-of-one.
+        </p>
 
-p, .description {
-  font-size: 18px;
-  color: #e5e5e5;
-  margin-top: 18px;
-}
+        <p style="font-size:17px; opacity:0.9; margin-bottom:25px;">
+            To authenticate a coin before buying or selling, send a photo and verification code to the official WONEUVWONE Instagram account. Every coin is archived for 100% verification.
+        </p>
 
-strong {
-  color: #FFD700;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
+        <!-- EMPTY DISCOUNT INPUT (MINIMAL + ELEGANT) -->
+        <input 
+        id="discountCode"
+        type="text"
+        placeholder=""
+        oninput="updatePrice()"
+        style="
+            width:100%;
+            padding:14px;
+            background:#0b0b0b;
+            border:1px solid rgba(255,255,255,0.15);
+            border-radius:8px;
+            color:#fff;
+            font-size:16px;
+            text-align:center;
+            letter-spacing:1px;
+            margin-bottom:30px;
+        ">
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin-top: 25px;
-  background: #0f0f0f;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: white;
-  font-size: 17px;
-  text-align: center;
-}
+        <!-- ORIGINAL PRICE -->
+        <div style="
+            text-align:center;
+            font-size:24px;
+            font-weight:300;
+            margin-bottom:8px;
+            opacity:0.75;
+        ">
+            1 Bitcoin
+        </div>
 
-#discountPrice {
-  margin-top: 20px;
-  font-size: 26px;
-  font-weight: 600;
-  color: #FFD700;
-  display: none;
-}
+        <!-- DISCOUNTED PRICE -->
+        <div id="finalPrice" style="
+            text-align:center;
+            font-size:32px;
+            font-weight:500;
+            padding-top:12px;
+        ">
+            1 BTC
+        </div>
 
-@media (max-width: 600px) {
-  h1 { font-size: 26px; }
-  p, .description { font-size: 16px; }
-  #discountPrice { font-size: 22px; }
-}
-</style>
-</head>
-<body>
-
-<section>
-
-  <h1>WONEUVWONE Handmade Coin</h1>
-
-  <p>Price per Coin: <strong>1 Bitcoin</strong></p>
-
-  <input type="text" id="discountCode" placeholder="Discount Code">
-  <div id="discountPrice"></div>
-
-  <div class="description">
-    <p>It’s a handmade coin made of wood pulp. Uriel Escarcega makes each single coin. Every single coin that’s made is one of one and is impossible to replicate. When the wood pulp is formed into a coin, every single time it comes in different patterns.</p>
-
-    <p>When you want to sell or buy from someone and you want to confirm it’s real and verify it, it’s done in the WONEUVWONE Instagram account. You direct message it, sending a picture of the coin and the code that came with the coin, and we tell you if it’s real or not.</p>
-
-    <p>WONEUVWONE has every single coin saved, so when you send us the code and the picture of the coin, we can 100% make sure it’s real.</p>
-
-    <p>It’s impossible to replicate because each time a WONEUVWONE coin is formed, all around it has infinite forms, ridges, and creases that never, ever replicate.</p>
-
-    <p>Each WONEUVWONE coin costs 1 Bitcoin.</p>
-  </div>
-
+    </div>
 </section>
 
 <script>
-// SIMPLE: Only shows discount number if code matches.
-const input = document.getElementById("discountCode");
-const display = document.getElementById("discountPrice");
+function updatePrice() {
+    const code = document.getElementById("discountCode").value.trim();
+    let price = 1; // BTC
 
-input.addEventListener("input", () => {
-  const code = input.value.trim().toUpperCase();
+    if (code === "PVCIU6105GOTCQQ32") {
+        price = 0.04; // 96% off
+    }
 
-  if (code === "PVCIU6105GOTCQQ32") {
-    display.style.display = "block";
-    display.innerText = "Discount Applied: 0.04 Bitcoin";
-  } else {
-    display.style.display = "none";
-  }
-});
+    document.getElementById("finalPrice").innerText = price + " BTC";
+}
 </script>
-
-</body>
-</html>

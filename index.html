@@ -48,7 +48,7 @@
         </p>
 
         <p style="font-size:2.2vw; line-height:1.8; opacity:0.9; margin-bottom:40px;">
-            
+            🥇
         </p>
 
         <!-- EMPTY DISCOUNT BOX -->
@@ -71,36 +71,4 @@
             "
         >
 
-        <!-- ORIGINAL PRICE -->
-        <div style="
-            font-size:3vw;
-            font-weight:400;
-            opacity:0.6;
-            margin-bottom:15px;
-        ">
-            1.46 Bitcoin
-        </div>
-
-        <!-- FINAL PRICE -->
-        <div id="finalPrice" style="
-            font-size:6vw;
-            font-weight:700;
-        ">
-            1.46 BTC
-        </div>
-
-    </div>
-</section>
-
-<script>
-function updatePrice() {
-    const code = document.getElementById("discountCode").value.trim();
-    let price = 1.46;
-
-    if (code === "PVCIU6105GOTCQQ32") {
-        price = 0.04;
-    }
-
-    document.getElementById("finalPrice").innerText = price + " BTC";
-}
 </script>
